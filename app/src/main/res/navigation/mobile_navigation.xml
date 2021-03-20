@@ -9,7 +9,7 @@
         android:id="@+id/navigation_home"
         android:name="com.cis4030.pokedex.ui.pokedex_list.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/pokedex_list_fragment" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
