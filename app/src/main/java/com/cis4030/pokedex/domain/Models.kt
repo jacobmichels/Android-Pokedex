@@ -1,48 +1,54 @@
 package com.cis4030.pokedex.domain
 
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class Pokemon(val id: Int,
                    val name: String,
                    val height: Int,
                    val weight: Int,
                    val imageUrl:String,
                    val baseExperience: Int,
-                   val abilities: List<Ability>,
+                   val abilities: List<String>,
                    val baseHP: Int,
                    val baseAtk: Int,
                    val baseDfn: Int,
                    val spAtk: Int,
                    val spDfn: Int,
                    val speed: Int,
-                   val types: List<Type>,
-                   val possibleMoves: List<Move>
+                   val types: List<String>,
+                   val possibleMoves: List<String>,
+                   val custom:Boolean
                    )
 
-data class Ability(val id: Int,
-                   val name:String,
+@JsonClass(generateAdapter = true)
+data class Ability(val name:String,
                    val description:String,
-                   val generation: Int
+                   val shortDescription:String
 )
 
-data class Type(val id:Int,
-                val name: String,
-                val strongAgainst: List<Type>,
-                val weakAgainst: List<Type>,
-                val generation: Int
+@JsonClass(generateAdapter = true)
+data class Type(val name: String,
+                val doubleDamageTo: List<String>,
+                val doubleDamageFrom: List<String>,
+                val halfDamageTo: List<String>,
+                val halfDamageFrom: List<String>,
+                val noDamageTo: List<String>,
+                val noDamageFrom: List<String>
                 )
 
-data class Move(val id:Int,
-                val name: String,
-                val moveType: Type,
+@JsonClass(generateAdapter = true)
+data class Move(val name: String,
+                val moveTypeName: String,
                 val accuracy: Int,
                 val power: Int,
                 val specialDamage: Boolean,
-                val generation: Int,
                 val pp: Int,
                 val priority: Int,
                 val effects:List<Effect>
                 )
 
-data class Effect(val id:Int,
-                  val description: String,
+@JsonClass(generateAdapter = true)
+data class Effect(val description: String,
                   val effectChance: Int?
                   )
