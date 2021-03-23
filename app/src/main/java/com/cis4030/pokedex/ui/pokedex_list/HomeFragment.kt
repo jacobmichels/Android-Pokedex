@@ -19,12 +19,15 @@ class HomeFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        val activity = requireNotNull(this.activity) {
+            "You can only access the viewModel after onActivityCreated()"
+        }
         homeViewModel =
-                ViewModelProvider(this).get(HomeViewModel::class.java)
+                ViewModelProvider(activity, HomeViewModel.Factory(activity.application)).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.pokedex_list_fragment, container, false)
         val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        homeViewModel.typeList.observe(viewLifecycleOwner, Observer {
+            textView.text = it.size.toString()
         })
         return root
     }
