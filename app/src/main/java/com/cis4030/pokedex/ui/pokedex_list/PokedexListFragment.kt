@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.cis4030.pokedex.R
+import com.cis4030.pokedex.databinding.FragmentListBinding
 import com.cis4030.pokedex.viewmodels.SharedViewModel
 
 class PokedexListFragment : Fragment() {
@@ -19,16 +20,17 @@ class PokedexListFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val activity = requireNotNull(this.activity) {
-            "You can only access the viewModel after onActivityCreated()"
-        }
+        val binding: FragmentListBinding = FragmentListBinding.inflate(inflater)
+
+        binding.lifecycleOwner=this
+        binding.viewModel=viewModel
+
         setHasOptionsMenu(true)
-        val root = inflater.inflate(R.layout.fragment_list, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        viewModel.pokemonList.observe(viewLifecycleOwner, Observer {
-            textView.text = "Pokemon count: ${it.size}"
-        })
-        return root
+
+//        viewModel.pokemonList.observe(viewLifecycleOwner, Observer {
+//            binding.textHome.text = "Pokemon count: ${it.size}"
+//        })
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
