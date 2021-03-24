@@ -8,11 +8,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.cis4030.pokedex.R
 import com.cis4030.pokedex.viewmodels.SharedViewModel
 
-class DashboardFragment : Fragment() {
+class TeamFragment : Fragment() {
 
     private val viewModel: SharedViewModel by activityViewModels()
 
@@ -21,9 +20,9 @@ class DashboardFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
+        val root = inflater.inflate(R.layout.fragment_team, container, false)
         val textView: TextView = root.findViewById(R.id.text_dashboard)
-        viewModel.text.observe(viewLifecycleOwner, Observer {
+        viewModel.teamText.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

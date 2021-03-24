@@ -8,11 +8,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.cis4030.pokedex.R
 import com.cis4030.pokedex.viewmodels.SharedViewModel
 
-class HomeFragment : Fragment() {
+class PokedexListFragment : Fragment() {
 
     private val viewModel: SharedViewModel by activityViewModels()
 
@@ -24,10 +23,10 @@ class HomeFragment : Fragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        val root = inflater.inflate(R.layout.pokedex_list_fragment, container, false)
+        val root = inflater.inflate(R.layout.fragment_list, container, false)
         val textView: TextView = root.findViewById(R.id.text_home)
-        viewModel.typeList.observe(viewLifecycleOwner, Observer {
-            textView.text = it.size.toString()
+        viewModel.pokemonList.observe(viewLifecycleOwner, Observer {
+            textView.text = "Pokemon count: ${it.size}"
         })
         return root
     }

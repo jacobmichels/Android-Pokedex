@@ -11,10 +11,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SharedViewModel(application: Application): AndroidViewModel(application) {
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is where the pokemon entries will appear."
+    private val _createText = MutableLiveData<String>().apply {
+        value = "Creation screen placeholder"
     }
-    val text: LiveData<String> = _text
+    val createText: LiveData<String> = _createText
+
+    private val _teamText = MutableLiveData<String>().apply {
+        value = "Team comp screen placeholder"
+    }
+    val teamText: LiveData<String> = _teamText
 
     /**
      * The data source this ViewModel will fetch results from.

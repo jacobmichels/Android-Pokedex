@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.cis4030.pokedex.ui.pokedex_list.HomeFragment"
+        android:name="com.cis4030.pokedex.ui.pokedex_list.PokedexListFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/pokedex_list_fragment" />
+        tools:layout="@layout/fragment_list" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.cis4030.pokedex.ui.team.DashboardFragment"
+        android:name="com.cis4030.pokedex.ui.team.TeamFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_team" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.cis4030.pokedex.ui.pokedex_create.NotificationsFragment"
+        android:name="com.cis4030.pokedex.ui.pokedex_create.PokedexCreateFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_create" />
 </navigation>
