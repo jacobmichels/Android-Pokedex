@@ -1,16 +1,16 @@
-package com.cis4030.pokedex.ui.pokedex_list
+package com.cis4030.pokedex.viewmodels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.cis4030.pokedex.database.DatabasePokemon
 import com.cis4030.pokedex.database.DatabaseType
 import com.cis4030.pokedex.database.getDatabase
 import com.cis4030.pokedex.repository.PokedexRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class HomeViewModel(application: Application) : ViewModel() {
-
+class SharedViewModel(application: Application): AndroidViewModel(application) {
     private val _text = MutableLiveData<String>().apply {
         value = "This is where the pokemon entries will appear."
     }
@@ -21,23 +21,21 @@ class HomeViewModel(application: Application) : ViewModel() {
      */
     private val pokedexRepository: PokedexRepository = PokedexRepository(getDatabase(application))
 
-    val pokemonList:LiveData<List<DatabasePokemon>> = pokedexRepository.pokemon
+    val pokemonList: LiveData<List<DatabasePokemon>> = pokedexRepository.pokemon
 
-    val typeList:LiveData<List<DatabaseType>> = pokedexRepository.types
+    val typeList: LiveData<List<DatabaseType>> = pokedexRepository.types
 
 
     init{
         viewModelScope.launch {
-            pokedexRepository.refreshDatabase()
+            withContext(Dispatchers.IO){
+                pokedexRepository.refreshDatabase()
+            }
+
 //            val list = PokeAPINetwork.pokeAPI.getAllPokemon()
 //            _text.value = list.count.toString()
         }
 
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("POKEDEX","viewmodel cleared")
     }
 
     /**
@@ -45,11 +43,12 @@ class HomeViewModel(application: Application) : ViewModel() {
      */
     class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(SharedViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return HomeViewModel(app) as T
+                return SharedViewModel(app) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }
     }
+
 }
