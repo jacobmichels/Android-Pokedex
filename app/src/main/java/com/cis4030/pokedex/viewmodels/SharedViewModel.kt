@@ -31,16 +31,24 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
     val typeList: LiveData<List<DatabaseType>> = pokedexRepository.types
 
 
-    init{
+//    init{
+//        viewModelScope.launch {
+//            withContext(Dispatchers.IO){
+//                pokedexRepository.refreshDatabase()
+//            }
+//
+////            val list = PokeAPINetwork.pokeAPI.getAllPokemon()
+////            _text.value = list.count.toString()
+//        }
+//
+//    }
+
+    fun refreshDatabase(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 pokedexRepository.refreshDatabase()
             }
-
-//            val list = PokeAPINetwork.pokeAPI.getAllPokemon()
-//            _text.value = list.count.toString()
         }
-
     }
 
     /**

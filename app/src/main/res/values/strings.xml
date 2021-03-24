@@ -3,4 +3,7 @@
     <string name="title_home">Pokedex</string>
     <string name="title_dashboard">Create</string>
     <string name="title_notifications">Teams</string>
+    <string name="settings_button_text">Settings</string>
+    <string name="refresh_button_text">Refresh</string>
+    <string name="about_button_text">About</string>
 </resources>

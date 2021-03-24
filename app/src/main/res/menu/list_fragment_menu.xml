@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/refresh_menu_button"
+        android:title="@string/refresh_button_text" />
+    <item
+        android:id="@+id/settings_menu_button"
+        android:title="@string/settings_button_text" />
+    <item
+        android:id="@+id/about_menu_button"
+        android:title="@string/about_button_text" />
+</menu>
