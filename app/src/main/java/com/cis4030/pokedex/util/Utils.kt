@@ -12,6 +12,7 @@ import kotlinx.coroutines.runBlocking
 
 
 /**
+ * Utility function to parallelize an action performed over an iterable.
  * Code taken from u/BigJhonny here: https://www.reddit.com/r/Kotlin/comments/9tc4gp/coroutines_are_executing_sequentially/
  */
 fun <T> parallelFor(range: Iterable<T>, action: suspend (T) -> Unit) = runBlocking {
@@ -20,6 +21,9 @@ fun <T> parallelFor(range: Iterable<T>, action: suspend (T) -> Unit) = runBlocki
     }
 }
 
+/**
+ * Utility function to return the background colour of a pokemon for the UI
+ */
 fun getColor(pokemon: DatabasePokemon): Drawable {
     return when(pokemon.types[0]){
         "grass" -> Color.parseColor("#4dd0b1").toDrawable()

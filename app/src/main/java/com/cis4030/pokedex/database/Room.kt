@@ -3,7 +3,11 @@ package com.cis4030.pokedex.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.cis4030.pokedex.domain.Move
+
+/**
+ * These Data access object interfaces are the APIs we use to interact with the Room database.
+ * They are implemented automatically by Room using the annotations and arguments supplied.
+ */
 
 @Dao
 interface PokemonDao {
@@ -53,6 +57,9 @@ interface TypeDao {
     suspend fun insertOne(type: DatabaseType)
 }
 
+/**
+ * This is the database class. Here we define the data types to store in the database, as well as references to the Daos.
+ */
 @Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class], version = 9)
 @TypeConverters(ListTypeConverters::class)
 abstract class PokemonDatabase:RoomDatabase(){

@@ -14,25 +14,41 @@ import java.net.SocketTimeoutException
 import java.util.concurrent.TimeoutException
 
 /**
- * Repository for fetching pokemon objects from pokeAPI and storing them on disk
+ * Repository for fetching pokemon objects from pokeAPI/Room.
+ * This is a layer of abstraction over top pokeAPI and Room.
  */
 class PokedexRepository(private val database: PokemonDatabase) {
+    /**
+     * The list of pokemon updated in real time.
+     */
     val pokemon: LiveData<List<DatabasePokemon>> = database.pokemonDao.getPokemon()
 
+    /**
+     * The list of types updated in real time.
+     */
     val types: LiveData<List<DatabaseType>> = database.typeDao.getTypes()
 
+    /**
+     * The list of moves updated in real time.
+     */
     val moves: LiveData<List<DatabaseMove>> = database.moveDao.getMoves()
 
+    /**
+     * The list of abilities updated in real time.
+     */
     val abilities: LiveData<List<DatabaseAbility>> = database.abilityDao.getAbilities()
 
+    /**
+     * This function updates the database with new data from pokeAPI
+     */
     suspend fun refreshDatabase() {
 
         val pokemonToFetch = PokeAPINetwork.pokeAPI.getAllPokemon()
         val pokemonToInsert = mutableListOf<DatabasePokemon>()
-        parallelFor(pokemonToFetch.results){
+        parallelFor(pokemonToFetch.results){        //asynchronously iterate through the pokemon we need to fetch, and get them from the API
             try{
                 val currentPokemon = PokeAPINetwork.pokeAPI.getPokemon(it.name)
-                pokemonToInsert.add(currentPokemon.asDatabaseModel())
+                pokemonToInsert.add(currentPokemon.asDatabaseModel())       //add the pokemon we just retrieved to the list of pokemon to insert into the database
                 Log.d("POKEDEX","Fetched ${currentPokemon.name} || ${currentPokemon.id}")
             } catch (e: HttpException){
                 Log.d("POKEDEX","HttpException occurred while refreshing pokemon: ${e.code()} || ${e.message()}")
@@ -40,8 +56,11 @@ class PokedexRepository(private val database: PokemonDatabase) {
                 Log.d("POKEDEX","Timeout occured while refreshing ability ${e.message}")
             }
         }
+        //insert all the pokemon we fetched into the database
         database.pokemonDao.insertAll(pokemonToInsert)
         Log.d("POKEDEX","Inserted all fetched pokemon.")
+
+        //do the same process with types, then moves, then abilities.
 
         val typesToFetch = PokeAPINetwork.pokeAPI.getTypes()
         val typesToInsert = mutableListOf<DatabaseType>()

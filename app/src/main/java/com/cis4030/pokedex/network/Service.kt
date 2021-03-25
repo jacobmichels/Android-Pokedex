@@ -15,6 +15,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 
+/**
+ * This is the interface that defines how we interact with pokeapi.
+ * We define methods and data types and they are implemented by retrofit automatically.
+ */
 interface PokeAPIService{
     @GET("pokemon?limit=2000")
     suspend fun getAllPokemon(): PokemonListDTO
