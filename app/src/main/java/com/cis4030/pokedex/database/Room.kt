@@ -7,7 +7,7 @@ import com.cis4030.pokedex.domain.Move
 
 @Dao
 interface PokemonDao {
-    @Query("select * from databasepokemon")
+    @Query("select * from databasepokemon order by id asc")
     fun getPokemon():LiveData<List<DatabasePokemon>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -23,6 +23,9 @@ interface AbilityDao {
     fun getAbilities():LiveData<List<DatabaseAbility>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(ability: List<DatabaseAbility>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOne(ability: DatabaseAbility)
 }
 
@@ -30,6 +33,9 @@ interface AbilityDao {
 interface MoveDao {
     @Query("select * from databasemove")
     fun getMoves():LiveData<List<DatabaseMove>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(move: List<DatabaseMove>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOne(move: DatabaseMove)
@@ -41,10 +47,13 @@ interface TypeDao {
     fun getTypes():LiveData<List<DatabaseType>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(type: List<DatabaseType>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOne(type: DatabaseType)
 }
 
-@Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class], version = 7)
+@Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class], version = 9)
 @TypeConverters(ListTypeConverters::class)
 abstract class PokemonDatabase:RoomDatabase(){
     abstract val pokemonDao:PokemonDao
