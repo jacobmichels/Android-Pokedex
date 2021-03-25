@@ -1,9 +1,12 @@
 package com.cis4030.pokedex.database
 
+import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.core.graphics.drawable.toDrawable
 import androidx.room.Database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.cis4030.pokedex.R
 import com.cis4030.pokedex.domain.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
