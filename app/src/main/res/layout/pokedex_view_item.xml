@@ -7,18 +7,22 @@
         <variable
             name="pokemon"
             type="com.cis4030.pokedex.database.DatabasePokemon" />
+        <variable
+            name="backgroundColor"
+            type="android.graphics.drawable.Drawable" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:background="@{backgroundColor}">
         <TextView
             android:id="@+id/pokemon_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textSize="24sp"
+            android:text="@{pokemon.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,14 +31,14 @@
 
         <ImageView
             android:id="@+id/pokemon_sprite"
-            android:layout_width="207dp"
-            android:layout_height="178dp"
+            android:layout_width="139dp"
+            android:layout_height="138dp"
             android:layout_marginStart="128dp"
-            android:layout_marginTop="29dp"
+            android:layout_marginTop="16dp"
             android:contentDescription="Image of the current pokemon"
             app:imageUrl="@{pokemon.imageUrl}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.888"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pokemon_name"
             tools:srcCompat="@mipmap/ic_squirtle_fg" />
@@ -43,8 +47,8 @@
             android:id="@+id/type_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="116dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="112dp"
             android:text="@{pokemon.types[0]}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -54,10 +58,10 @@
             android:id="@+id/type_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="176dp"
-            android:visibility="@{pokemon.types.size()>1 ? View.VISIBLE : View.GONE}"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="148dp"
             android:text="@{pokemon.types[1]}"
+            android:visibility="@{pokemon.types.size()>1 ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Poison" />
