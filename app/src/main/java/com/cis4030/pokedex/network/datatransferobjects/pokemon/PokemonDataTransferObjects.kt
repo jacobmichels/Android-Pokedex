@@ -1,6 +1,8 @@
 package com.cis4030.pokedex.network.datatransferobjects.pokemon
 
+import android.util.Log
 import com.cis4030.pokedex.database.DatabasePokemon
+import com.cis4030.pokedex.util.getColor
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
