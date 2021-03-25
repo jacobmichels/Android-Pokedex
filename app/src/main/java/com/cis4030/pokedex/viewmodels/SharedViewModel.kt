@@ -11,6 +11,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/**
+ * This is a ViewModel which stores data for views.
+ * It is needed because it survives configuration changes like screen rotations when views do not.
+ */
 class SharedViewModel(application: Application): AndroidViewModel(application) {
     private val _createText = MutableLiveData<String>().apply {
         value = "Creation screen placeholder"

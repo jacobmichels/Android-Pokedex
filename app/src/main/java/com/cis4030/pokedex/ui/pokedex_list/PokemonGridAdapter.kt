@@ -1,8 +1,6 @@
 package com.cis4030.pokedex.ui.pokedex_list
 
-import android.content.DialogInterface
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cis4030.pokedex.database.DatabasePokemon
 import com.cis4030.pokedex.databinding.PokedexViewItemBinding
+import com.cis4030.pokedex.util.getColor
 
 class PokemonGridAdapter(private val onClickListener: OnClickListener) : ListAdapter<DatabasePokemon, PokemonGridAdapter.PokemonViewHolder>(DiffCallback) {
 
@@ -21,10 +20,15 @@ class PokemonGridAdapter(private val onClickListener: OnClickListener) : ListAda
         RecyclerView.ViewHolder(binding.root) {
         fun bind(pokemon: DatabasePokemon) {
             binding.pokemon = pokemon
+            binding.backgroundColor = getColor(pokemon)
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
         }
+    }
+
+    init {
+        this.setHasStableIds(true)
     }
 
     /**
@@ -58,6 +62,11 @@ class PokemonGridAdapter(private val onClickListener: OnClickListener) : ListAda
             onClickListener.onClick(pokemon)
         }
         holder.bind(pokemon)
+    }
+
+    override fun getItemId(position: Int): Long {
+        val pokemon = getItem(position)
+        return pokemon.id.toLong()
     }
 
     /**

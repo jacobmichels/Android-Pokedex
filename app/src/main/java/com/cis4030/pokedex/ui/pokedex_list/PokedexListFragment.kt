@@ -25,19 +25,17 @@ class PokedexListFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        //Use data binding to remove expensive calls to findviewbyid()
         val binding: FragmentListBinding = FragmentListBinding.inflate(inflater)
-
         binding.lifecycleOwner=this
         binding.viewModel=viewModel
+        //add the PokemonGridAdapter, which is responsible for mapping pokemon data to the recyclerview
         binding.pokemonGrid.adapter = PokemonGridAdapter(PokemonGridAdapter.OnClickListener{
-            viewModel.displayPokemonDetails(it)
+            viewModel.displayPokemonDetails(it)     //onclick, call this function
         })
 
-        setHasOptionsMenu(true)
+        setHasOptionsMenu(true)     //use an options menu
 
-//        viewModel.pokemonList.observe(viewLifecycleOwner, Observer {
-//            binding.textHome.text = "Pokemon count: ${it.size}"
-//        })
         return binding.root
     }
 

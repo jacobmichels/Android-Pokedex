@@ -2,87 +2,113 @@ package com.cis4030.pokedex.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.liveData
 import com.cis4030.pokedex.database.*
-import com.cis4030.pokedex.domain.Pokemon
 import com.cis4030.pokedex.network.PokeAPINetwork
 import com.cis4030.pokedex.network.datatransferobjects.move.asDatabaseModel
 import com.cis4030.pokedex.network.datatransferobjects.pokemon.asDatabaseModel
 import com.cis4030.pokedex.network.datatransferobjects.type.asDatabaseModel
 import com.cis4030.pokedex.network.datatransferobjects.ability.asDatabaseModel
 import com.cis4030.pokedex.util.parallelFor
-import com.google.api.Http
-import kotlinx.coroutines.*
 import retrofit2.HttpException
-import java.net.HttpCookie
+import java.net.SocketTimeoutException
 import java.util.concurrent.TimeoutException
-import kotlin.coroutines.coroutineContext
 
 /**
- * Repository for fetching pokemon objects from pokeAPI and storing them on disk
+ * Repository for fetching pokemon objects from pokeAPI/Room.
+ * This is a layer of abstraction over top pokeAPI and Room.
  */
 class PokedexRepository(private val database: PokemonDatabase) {
+    /**
+     * The list of pokemon updated in real time.
+     */
     val pokemon: LiveData<List<DatabasePokemon>> = database.pokemonDao.getPokemon()
 
+    /**
+     * The list of types updated in real time.
+     */
     val types: LiveData<List<DatabaseType>> = database.typeDao.getTypes()
 
+    /**
+     * The list of moves updated in real time.
+     */
     val moves: LiveData<List<DatabaseMove>> = database.moveDao.getMoves()
 
+    /**
+     * The list of abilities updated in real time.
+     */
     val abilities: LiveData<List<DatabaseAbility>> = database.abilityDao.getAbilities()
 
+    /**
+     * This function updates the database with new data from pokeAPI
+     */
     suspend fun refreshDatabase() {
 
-        val pokemonList = PokeAPINetwork.pokeAPI.getAllPokemon()
-        parallelFor(pokemonList.results){
+        val pokemonToFetch = PokeAPINetwork.pokeAPI.getAllPokemon()
+        val pokemonToInsert = mutableListOf<DatabasePokemon>()
+        parallelFor(pokemonToFetch.results){        //asynchronously iterate through the pokemon we need to fetch, and get them from the API
             try{
                 val currentPokemon = PokeAPINetwork.pokeAPI.getPokemon(it.name)
-                database.pokemonDao.insertOne(currentPokemon.asDatabaseModel())
-                Log.d("POKEDEX","Inserted ${currentPokemon.name} || ${currentPokemon.id}")
+                pokemonToInsert.add(currentPokemon.asDatabaseModel())       //add the pokemon we just retrieved to the list of pokemon to insert into the database
+                Log.d("POKEDEX","Fetched ${currentPokemon.name} || ${currentPokemon.id}")
             } catch (e: HttpException){
                 Log.d("POKEDEX","HttpException occurred while refreshing pokemon: ${e.code()} || ${e.message()}")
-            } catch (e: TimeoutException){
+            } catch (e: SocketTimeoutException){
                 Log.d("POKEDEX","Timeout occured while refreshing ability ${e.message}")
             }
         }
+        //insert all the pokemon we fetched into the database
+        database.pokemonDao.insertAll(pokemonToInsert)
+        Log.d("POKEDEX","Inserted all fetched pokemon.")
 
-        val typeList = PokeAPINetwork.pokeAPI.getTypes()
-        parallelFor(typeList.results){
+        //do the same process with types, then moves, then abilities.
+
+        val typesToFetch = PokeAPINetwork.pokeAPI.getTypes()
+        val typesToInsert = mutableListOf<DatabaseType>()
+        parallelFor(typesToFetch.results){
             try {
                 val currentType = PokeAPINetwork.pokeAPI.getType(it.name)
-                database.typeDao.insertOne(currentType.asDatabaseModel())
-                Log.d("POKEDEX", "Inserted ${currentType.name} || ${currentType.id}")
+                typesToInsert.add(currentType.asDatabaseModel())
+                Log.d("POKEDEX", "Fetched ${currentType.name} || ${currentType.id}")
             } catch (e: HttpException) {
                 Log.d("POKEDEX", "HttpException occurred while refreshing types: ${e.code()} || ${e.message()}")
-            } catch (e: TimeoutException){
+            } catch (e: SocketTimeoutException){
                 Log.d("POKEDEX","Timeout occured while refreshing ability ${e.message}")
             }
         }
+        database.typeDao.insertAll(typesToInsert)
+        Log.d("POKEDEX","Inserted all fetched types.")
 
-        val moveList = PokeAPINetwork.pokeAPI.getMoves()
-        parallelFor(moveList.results){
+        val movesToFetch = PokeAPINetwork.pokeAPI.getMoves()
+        val movesToInsert = mutableListOf<DatabaseMove>()
+        parallelFor(movesToFetch.results){
             try {
                 val currentMove = PokeAPINetwork.pokeAPI.getMove(it.name)
-                database.moveDao.insertOne(currentMove.asDatabaseModel())
+                movesToInsert.add(currentMove.asDatabaseModel())
                 Log.d("POKEDEX", "Inserted ${currentMove.name} || ${currentMove.id}")
             } catch (e: HttpException) {
                 Log.d("POKEDEX", "HttpException occurred while refreshing moves: ${e.code()} || ${e.message()}")
-            } catch (e: TimeoutException){
+            } catch (e: SocketTimeoutException){
                 Log.d("POKEDEX","Timeout occured while refreshing ability ${e.message}")
             }
         }
+        database.moveDao.insertAll(movesToInsert)
+        Log.d("POKEDEX","Inserted all fetched moves.")
 
-        val abilityList = PokeAPINetwork.pokeAPI.getAbilities()
-        parallelFor(abilityList.results){
+
+        val abilitiesToFetch = PokeAPINetwork.pokeAPI.getAbilities()
+        val abilitiesToInsert = mutableListOf<DatabaseAbility>()
+        parallelFor(abilitiesToFetch.results){
             try {
                 val currentAbility = PokeAPINetwork.pokeAPI.getAbility(it.name)
-                database.abilityDao.insertOne(currentAbility.asDatabaseModel())
+                abilitiesToInsert.add(currentAbility.asDatabaseModel())
                 Log.d("POKEDEX", "Inserted ${currentAbility.name} || ${currentAbility.id}")
             } catch (e: HttpException) {
                 Log.d("POKEDEX", "HttpException occurred while refreshing abilities: ${e.code()} || ${e.message()}")
-            } catch (e: TimeoutException){
+            } catch (e: SocketTimeoutException){
                 Log.d("POKEDEX","Timeout occured while refreshing ability ${e.message}")
             }
         }
+        database.abilityDao.insertAll(abilitiesToInsert)
+        Log.d("POKEDEX","Inserted all fetched abilities.")
     }
 }

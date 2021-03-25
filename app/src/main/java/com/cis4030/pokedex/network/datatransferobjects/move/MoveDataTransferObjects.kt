@@ -2,8 +2,6 @@ package com.cis4030.pokedex.network.datatransferobjects.move
 
 import com.cis4030.pokedex.database.DatabaseMove
 import com.cis4030.pokedex.domain.Effect
-import com.cis4030.pokedex.domain.Move
-import com.cis4030.pokedex.network.PokeAPINetwork
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

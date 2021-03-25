@@ -1,13 +1,15 @@
 package com.cis4030.pokedex.database
 
 import androidx.room.TypeConverter
-import com.cis4030.pokedex.domain.Ability
 import com.cis4030.pokedex.domain.Effect
-import com.cis4030.pokedex.domain.Move
-import com.cis4030.pokedex.domain.Type
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 
+
+/**
+ * These are functions used by Room to convert Lists of strings to and from JSON for storage in the database.
+ * Without these, we wouldn't be able to store lists in the database.
+ */
 class ListTypeConverters {
 
     private val moshi: Moshi = Moshi.Builder().build()
