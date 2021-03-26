@@ -33,6 +33,7 @@ class PokedexListFragment : Fragment() {
         binding.pokemonGrid.adapter = PokemonGridAdapter(PokemonGridAdapter.OnClickListener{
             viewModel.displayPokemonDetails(it)     //onclick, call this function
         })
+        binding.pokemonGrid.addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.item_margin)))
 
         setHasOptionsMenu(true)     //use an options menu
 
