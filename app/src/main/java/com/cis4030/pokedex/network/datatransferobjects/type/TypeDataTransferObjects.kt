@@ -51,30 +51,30 @@ data class TypeListDTO(
 
 fun TypeDTO.asDatabaseModel():DatabaseType{
     return DatabaseType(
-        name = this.name,
+        name = this.name.capitalize(),
         moveList = this.moves.map{
-            it.name
+            it.name.capitalize()
         },
         pokemonList = this.pokemon.map{
-            it.pokemon.name
+            it.pokemon.name.capitalize()
         },
         doubleDamageFrom = this.damage_relations.double_damage_from.map{
-                 it.name
+                 it.name.capitalize()
         },
         doubleDamageTo = this.damage_relations.double_damage_to.map{
-            it.name
+            it.name.capitalize()
         },
         halfDamageFrom = this.damage_relations.half_damage_from.map{
-            it.name
+            it.name.capitalize()
         },
         halfDamageTo = this.damage_relations.half_damage_to.map {
-            it.name
+            it.name.capitalize()
         },
         noDamageFrom = this.damage_relations.no_damage_from.map{
-            it.name
+            it.name.capitalize()
         },
         noDamageTo = this.damage_relations.no_damage_to.map{
-            it.name
+            it.name.capitalize()
         }
     )
 }

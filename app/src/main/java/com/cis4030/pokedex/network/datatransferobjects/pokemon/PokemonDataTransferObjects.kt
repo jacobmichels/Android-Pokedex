@@ -345,13 +345,13 @@ data class PokemonListDTO(
 fun PokemonDTO.asDatabaseModel(): DatabasePokemon {
     return DatabasePokemon(
         id=this.id,
-        name=this.name,
+        name=this.name.capitalize(),
         height = this.height,
         weight = this.weight,
         imageUrl = this.sprites.other.officialArtwork.front_default ?: "",
         baseExperience = this.base_experience,
         abilities = this.abilities.map{
-            it.ability.name
+            it.ability.name.capitalize()
         },
         baseHP = this.stats[0].base_stat,
         baseAtk = this.stats[1].base_stat,
@@ -360,10 +360,10 @@ fun PokemonDTO.asDatabaseModel(): DatabasePokemon {
         spDfn = this.stats[4].base_stat,
         speed = this.stats[5].base_stat,
         types=this.types.map{
-            it.type.name
+            it.type.name.capitalize()
         },
         possibleMoves = this.moves.map{
-            it.move.name
+            it.move.name.capitalize()
         },
         custom=false
     )
