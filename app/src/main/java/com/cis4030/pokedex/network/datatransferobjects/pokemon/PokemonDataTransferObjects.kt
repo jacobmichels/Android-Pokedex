@@ -365,6 +365,8 @@ fun PokemonDTO.asDatabaseModel(): DatabasePokemon {
         possibleMoves = this.moves.map{
             it.move.name.capitalize()
         },
-        custom=false
+        custom=false,
+        generation = -1,
+        speciesName = this.species.name
     )
 }
