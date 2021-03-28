@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -48,6 +50,7 @@ class PokedexListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.refresh_menu_button ->{
+                Toast.makeText(context,"Refreshing information. This may take a few minutes.",Toast.LENGTH_LONG).show()
                 viewModel.refreshDatabase()
                 true
             }
@@ -57,6 +60,11 @@ class PokedexListFragment : Fragment() {
             }
             R.id.settings_menu_button ->{
                 Log.d("POKEDEX","Settings menu button clicked.")
+                true
+            }
+            R.id.filter_sort_menu_button -> {
+                Log.d("POKEDEX","Filter menu button clicked.")
+                val dialogFragment = SortFilterDialogFragment().show(parentFragmentManager,"Dialog")
                 true
             }
             else -> super.onOptionsItemSelected(item)
