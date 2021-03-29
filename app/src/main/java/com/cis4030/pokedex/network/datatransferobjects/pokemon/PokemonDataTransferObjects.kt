@@ -359,9 +359,8 @@ fun PokemonDTO.asDatabaseModel(): DatabasePokemon {
         spAtk = this.stats[3].base_stat,
         spDfn = this.stats[4].base_stat,
         speed = this.stats[5].base_stat,
-        types=this.types.map{
-            it.type.name.capitalize()
-        },
+        type1 = this.types[0].type.name.capitalize(),
+        type2 = this.types[0].type.name.capitalize(),
         possibleMoves = this.moves.map{
             it.move.name.capitalize()
         },

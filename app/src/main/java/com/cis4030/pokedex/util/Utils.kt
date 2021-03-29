@@ -25,7 +25,7 @@ fun <T> parallelFor(range: Iterable<T>, action: suspend (T) -> Unit) = runBlocki
  * Utility function to return the background colour of a pokemon for the UI
  */
 fun getColor(pokemon: DatabasePokemon): Int {
-    return when(pokemon.types[0].toLowerCase()){
+    return when(pokemon.type1.toLowerCase()){
         "grass" -> R.drawable.custom_rounded_corners_grass
         "fire" -> R.drawable.custom_rounded_corners_fire
         "water" -> R.drawable.custom_rounded_corners_water
@@ -47,25 +47,3 @@ fun getColor(pokemon: DatabasePokemon): Int {
         else -> R.drawable.custom_rounded_corners_white
     }
 }
-
-//return when(pokemon.types[0].toLowerCase()){
-//    "grass" -> Color.parseColor("#4dd0b1").toDrawable()
-//    "fire" -> Color.parseColor("#fa6b6e").toDrawable()
-//    "water" -> Color.parseColor("#A4FF9A").toDrawable()
-//    "electric" -> Color.parseColor("#fec52b").toDrawable()
-//    "normal" -> Color.parseColor("#c6c6a7").toDrawable()
-//    "psychic" -> Color.parseColor("#fa92b2").toDrawable()
-//    "fighting" -> Color.parseColor("#ff564d").toDrawable()
-//    "flying" -> Color.parseColor("#a890f0").toDrawable()
-//    "poison" -> Color.parseColor("#a040a0").toDrawable()
-//    "ground" -> Color.parseColor("#e0c068").toDrawable()
-//    "rock" -> Color.parseColor("#b8a038").toDrawable()
-//    "ice" -> Color.parseColor("#98d8d8").toDrawable()
-//    "bug" -> Color.parseColor("#a8b820").toDrawable()
-//    "dragon" -> Color.parseColor("#8f61ff").toDrawable()
-//    "ghost" -> Color.parseColor("#af89f0").toDrawable()
-//    "dark" -> Color.parseColor("#8f857f").toDrawable()
-//    "steel" -> Color.parseColor("#b8b8d0").toDrawable()
-//    "fairy" -> Color.parseColor("#ffa1dc").toDrawable()
-//    else -> Color.WHITE.toDrawable()
-//}

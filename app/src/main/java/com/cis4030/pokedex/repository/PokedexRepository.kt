@@ -1,7 +1,12 @@
 package com.cis4030.pokedex.repository
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.room.Database
 import com.cis4030.pokedex.database.*
 import com.cis4030.pokedex.network.PokeAPINetwork
 import com.cis4030.pokedex.network.datatransferobjects.move.asDatabaseModel
@@ -21,22 +26,116 @@ class PokedexRepository(private val database: PokemonDatabase) {
     /**
      * The list of pokemon updated in real time.
      */
-    val pokemon: LiveData<List<DatabasePokemon>> = database.pokemonDao.getPokemon()
+    var dbPokemon: LiveData<List<DatabasePokemon>> = database.pokemonDao.getPokemonByNameDsc()
+
+    val pokemonMediator = MediatorLiveData<List<DatabasePokemon>>()
+
+    var currentSource: LiveData<List<DatabasePokemon>>
+
+    init{
+        val source = database.pokemonDao.getPokemonByIdAsc()
+        pokemonMediator.addSource(source) {
+            pokemonMediator.value = it
+        }
+        currentSource=source
+    }
 
     /**
      * The list of types updated in real time.
      */
-    val types: LiveData<List<DatabaseType>> = database.typeDao.getTypes()
+    val dbTypes: LiveData<List<DatabaseType>> = database.typeDao.getTypes()
 
     /**
      * The list of moves updated in real time.
      */
-    val moves: LiveData<List<DatabaseMove>> = database.moveDao.getMoves()
+    val dbMoves: LiveData<List<DatabaseMove>> = database.moveDao.getMoves()
 
     /**
      * The list of abilities updated in real time.
      */
-    val abilities: LiveData<List<DatabaseAbility>> = database.abilityDao.getAbilities()
+    val dbAbilities: LiveData<List<DatabaseAbility>> = database.abilityDao.getAbilities()
+
+    fun reorganizePokemon(order: String, generationFilters:List<Int>, typeFilters: List<String>){
+        if(generationFilters.isNotEmpty() && typeFilters.isNotEmpty()){
+            when(order){
+                "ID Ascending"-> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdAsc(generationFilters, typeFilters))
+                }
+                "ID Descending" ->{
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdDsc(generationFilters,typeFilters))
+                }
+                "Name Ascending"->{
+                    setNewPokemonSource(database.pokemonDao.getPokemonByName(generationFilters,typeFilters))
+                }
+                "Name Descending"->{
+                    setNewPokemonSource(database.pokemonDao.getPokemonByNameDsc(generationFilters,typeFilters))
+                }
+            }
+        }
+        else if(generationFilters.isEmpty()) {
+            when (order) {
+                "ID Ascending" ->{
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdAsc(typeFilters))
+                }
+                "ID Descending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdDsc(typeFilters))
+                }
+                "Name Ascending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByName(typeFilters))
+                }
+                "Name Descending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByNameDsc(typeFilters))
+                }
+            }
+        }
+        else if(typeFilters.isEmpty()){
+            when (order) {
+                "ID Ascending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdAscGenerationFilter(generationFilters))
+                }
+                "ID Descending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdDscGenerationFilter(generationFilters))
+                }
+                "Name Ascending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByNameGenerationFilter(generationFilters))
+                }
+                "Name Descending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByNameDscGenerationFilter(generationFilters))
+                }
+            }
+        }
+        //both empty
+        else{
+            when (order) {
+                "ID Ascending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdAsc())
+                }
+                "ID Descending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdDsc())
+                }
+                "Name Ascending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByName())
+                }
+                "Name Descending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByNameDsc())
+                }
+            }
+        }
+
+    }
+
+    private fun setNewPokemonSource(nextSource: LiveData<List<DatabasePokemon>>) {
+        pokemonMediator.removeSource(currentSource)
+        pokemonMediator.value = null
+        currentSource = nextSource
+        pokemonMediator.addSource(currentSource) {
+            pokemonMediator.value = it
+        }
+    }
+
+    fun restoreDefaultOrganization(){
+        dbPokemon=database.pokemonDao.getPokemonByIdAsc()
+    }
 
     /**
      * This function updates the database with new data from pokeAPI

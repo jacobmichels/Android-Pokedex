@@ -28,4 +28,5 @@
     <color name="steel">#b8b8d0</color>
     <color name="fairy">#ffa1dc</color>
     <color name="unchecked_chip">#e5e5e5</color>
+    <color name="dialog_button_text">#FFFFFF</color>
 </resources>

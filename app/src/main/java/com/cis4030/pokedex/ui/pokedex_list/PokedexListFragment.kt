@@ -3,19 +3,11 @@ package com.cis4030.pokedex.ui.pokedex_list
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
 import com.cis4030.pokedex.R
-import com.cis4030.pokedex.database.DatabasePokemon
 import com.cis4030.pokedex.databinding.FragmentListBinding
-import com.cis4030.pokedex.databinding.PokedexViewItemBinding
 import com.cis4030.pokedex.viewmodels.SharedViewModel
 
 class PokedexListFragment : Fragment() {
@@ -62,9 +54,17 @@ class PokedexListFragment : Fragment() {
                 Log.d("POKEDEX","Settings menu button clicked.")
                 true
             }
-            R.id.filter_sort_menu_button -> {
+            R.id.filter_menu_button -> {
                 Log.d("POKEDEX","Filter menu button clicked.")
-                val dialogFragment = SortFilterDialogFragment().show(parentFragmentManager,"Dialog")
+                val dialogFragment = FilterDialogFragment()
+                dialogFragment.isCancelable = false
+                dialogFragment.show(parentFragmentManager,"Dialog")
+                true
+            }
+            R.id.sort_menu_button-> {
+                val dialogFragment = SortDialogFragment()
+                dialogFragment.isCancelable = false
+                dialogFragment.show(parentFragmentManager,"Dialog")
                 true
             }
             else -> super.onOptionsItemSelected(item)
