@@ -6,4 +6,6 @@
     <string name="settings_button_text">Settings</string>
     <string name="refresh_button_text">Refresh</string>
     <string name="about_button_text">About</string>
+    <string name="sort_filter_button_text">Sort/Filter</string>
+    <string name="search_button_text">Search</string>
 </resources>

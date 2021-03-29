@@ -49,15 +49,15 @@ data class MoveListDTO(
 
 fun MoveDTO.asDatabaseModel(): DatabaseMove {
     return DatabaseMove(
-        name=this.name,
-        type = this.type.name,
+        name=this.name.capitalize(),
+        type = this.type.name.capitalize(),
         accuracy = this.accuracy,
         damageType = this.damage_class?.name,
         effects = this.effect_entries.map{
-            Effect(description = it.effect,effectChance = this.effect_chance)
+            Effect(description = it.effect.capitalize(),effectChance = this.effect_chance)
         },
         learnedByPokemon = this.learned_by_pokemon.map{
-            name
+            name.capitalize()
         },
         power = this.power,
         pp = this.pp,

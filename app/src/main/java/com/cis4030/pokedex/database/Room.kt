@@ -60,7 +60,7 @@ interface TypeDao {
 /**
  * This is the database class. Here we define the data types to store in the database, as well as references to the Daos.
  */
-@Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class], version = 9)
+@Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class], version = 11)
 @TypeConverters(ListTypeConverters::class)
 abstract class PokemonDatabase:RoomDatabase(){
     abstract val pokemonDao:PokemonDao
