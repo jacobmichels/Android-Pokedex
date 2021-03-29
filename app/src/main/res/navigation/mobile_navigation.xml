@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/pokedex_home">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/pokedex_home"
         android:name="com.cis4030.pokedex.ui.pokedex_list.PokedexListFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_list" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.cis4030.pokedex.ui.team.TeamFragment"
+        android:id="@+id/pokedex_create"
+        android:name="com.cis4030.pokedex.ui.pokedex_create.PokedexCreateFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_team" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.cis4030.pokedex.ui.pokedex_create.PokedexCreateFragment"
+        android:id="@+id/team_viewer"
+        android:name="com.cis4030.pokedex.ui.team.TeamFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_create" />
 </navigation>
