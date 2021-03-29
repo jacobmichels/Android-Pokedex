@@ -80,11 +80,11 @@ fun AbilityDTO.asDatabaseModel():DatabaseAbility{
     }
 
     return DatabaseAbility(
-        name = this.name,
-        description = description,
-        shortDescription = shortEffect,
+        name = this.name.capitalize(),
+        description = description.capitalize(),
+        shortDescription = shortEffect.capitalize(),
         pokemonList = this.pokemon.map{
-            it.pokemon.name
+            it.pokemon.name.capitalize()
         }
     )
 }

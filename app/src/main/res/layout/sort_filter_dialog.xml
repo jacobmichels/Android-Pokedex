@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckBox
+        android:id="@+id/checkBox9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="76dp"
+        android:buttonTint="@color/alternate_red"
+        android:text="2"
+        app:layout_constraintStart_toEndOf="@+id/checkBox8"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBox11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="76dp"
+        android:buttonTint="@color/alternate_red"
+        android:text="4"
+        app:layout_constraintStart_toEndOf="@+id/checkBox10"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBox14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:buttonTint="@color/alternate_red"
+        android:text="7"
+        app:layout_constraintStart_toEndOf="@+id/checkBox13"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox10" />
+
+    <CheckBox
+        android:id="@+id/checkBox12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:buttonTint="@color/alternate_red"
+        android:text="5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox8" />
+
+    <CheckBox
+        android:id="@+id/checkBox15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:buttonTint="@color/alternate_red"
+        android:text="8"
+        app:layout_constraintStart_toEndOf="@+id/checkBox14"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox11" />
+
+    <CheckBox
+        android:id="@+id/checkBox13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:buttonTint="@color/alternate_red"
+        android:text="6"
+        app:layout_constraintStart_toEndOf="@+id/checkBox12"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox9" />
+
+    <CheckBox
+        android:id="@+id/checkBox8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="76dp"
+        android:buttonTint="@color/alternate_red"
+        android:text="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBox10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="76dp"
+        android:buttonTint="@color/alternate_red"
+        android:text="3"
+        app:layout_constraintStart_toEndOf="@+id/checkBox9"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sort_filter_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Filter Pokemon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="56dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="By Generation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="180dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="By Type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip6"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="204dp"
+        android:checkable="true"
+        android:text="Fighting"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_fighting"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip2"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="204dp"
+        android:checkable="true"
+        android:text="Water"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_water"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip6"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip32"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Psychic"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_psychic"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip31"
+        app:layout_constraintTop_toBottomOf="@+id/chip3" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip31"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Ground"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_ground"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chip5" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip1"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="204dp"
+        android:checkable="true"
+        android:text="Normal"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_normal"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip36"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Dragon"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_dragon"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip35"
+        app:layout_constraintTop_toBottomOf="@+id/chip32" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip38"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Dark"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_dark"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip37"
+        app:layout_constraintTop_toBottomOf="@+id/chip34" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip34"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Ice"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_ice"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip33"
+        app:layout_constraintTop_toBottomOf="@+id/chip29" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip39"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Steel"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_steel"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chip36" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip33"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Rock"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_rock"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip32"
+        app:layout_constraintTop_toBottomOf="@+id/chip30" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip30"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Poison"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_poison"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip3"
+        app:layout_constraintTop_toBottomOf="@+id/chip6" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip4"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="204dp"
+        android:checkable="true"
+        android:text="Fire"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_fire"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip37"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Ghost"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_ghost"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip36"
+        app:layout_constraintTop_toBottomOf="@+id/chip33" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip40"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Fairy"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_fairy"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip39"
+        app:layout_constraintTop_toBottomOf="@+id/chip37" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip5"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Flying"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_flying"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chip1" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip29"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Electric"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_electric"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip30"
+        app:layout_constraintTop_toBottomOf="@+id/chip2" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip35"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Bug"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_bug"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chip31" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip3"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="Grass"
+        android:textAlignment="center"
+        app:checkedIconVisible="false"
+        app:chipBackgroundColor="@color/bg_chip_grass"
+        app:chipIconVisible="false"
+        app:layout_constraintStart_toEndOf="@+id/chip5"
+        app:layout_constraintTop_toBottomOf="@+id/chip4" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

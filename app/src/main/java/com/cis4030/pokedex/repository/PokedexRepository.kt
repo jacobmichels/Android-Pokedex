@@ -53,9 +53,27 @@ class PokedexRepository(private val database: PokemonDatabase) {
             } catch (e: HttpException){
                 Log.d("POKEDEX","HttpException occurred while refreshing pokemon: ${e.code()} || ${e.message()}")
             } catch (e: SocketTimeoutException){
-                Log.d("POKEDEX","Timeout occured while refreshing ability ${e.message}")
+                Log.d("POKEDEX","Timeout occured while refreshing pokemon ${e.message}")
             }
         }
+        val generationsToFetch = PokeAPINetwork.pokeAPI.getGenerations()
+        parallelFor(generationsToFetch.results){ generation ->
+            try{
+                val currentGeneration = PokeAPINetwork.pokeAPI.getGeneration(generation.name)
+                for (pokemon in currentGeneration.pokemon_species) {
+                    pokemonToInsert.filter {
+                        it.speciesName.equals(pokemon.name, ignoreCase = true)
+                    }.map {
+                        it.generation=currentGeneration.id
+                    }
+                }
+            } catch (e:HttpException){
+                Log.d("POKEDEX","HttpException occurred while update pokemon generations: ${e.code()} || ${e.message()}")
+            } catch (e: SocketTimeoutException) {
+                Log.d("POKEDEX","Timeout occured while fetching generations ${e.message}")
+            }
+        }
+
         //insert all the pokemon we fetched into the database
         database.pokemonDao.insertAll(pokemonToInsert)
         Log.d("POKEDEX","Inserted all fetched pokemon.")
@@ -72,7 +90,7 @@ class PokedexRepository(private val database: PokemonDatabase) {
             } catch (e: HttpException) {
                 Log.d("POKEDEX", "HttpException occurred while refreshing types: ${e.code()} || ${e.message()}")
             } catch (e: SocketTimeoutException){
-                Log.d("POKEDEX","Timeout occured while refreshing ability ${e.message}")
+                Log.d("POKEDEX","Timeout occured while refreshing types ${e.message}")
             }
         }
         database.typeDao.insertAll(typesToInsert)
@@ -88,7 +106,7 @@ class PokedexRepository(private val database: PokemonDatabase) {
             } catch (e: HttpException) {
                 Log.d("POKEDEX", "HttpException occurred while refreshing moves: ${e.code()} || ${e.message()}")
             } catch (e: SocketTimeoutException){
-                Log.d("POKEDEX","Timeout occured while refreshing ability ${e.message}")
+                Log.d("POKEDEX","Timeout occured while refreshing moves ${e.message}")
             }
         }
         database.moveDao.insertAll(movesToInsert)

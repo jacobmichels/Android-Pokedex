@@ -29,7 +29,9 @@ data class DatabasePokemon constructor(
     val speed: Int,
     val types: List<String>,
     val possibleMoves: List<String>,
-    val custom: Boolean
+    val custom: Boolean,
+    var generation: Int,
+    val speciesName: String
 )
 
 @Entity

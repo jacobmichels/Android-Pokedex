@@ -3,9 +3,7 @@ package com.cis4030.pokedex.viewmodels
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import com.cis4030.pokedex.database.DatabasePokemon
-import com.cis4030.pokedex.database.DatabaseType
-import com.cis4030.pokedex.database.getDatabase
+import com.cis4030.pokedex.database.*
 import com.cis4030.pokedex.repository.PokedexRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,6 +32,10 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
     val pokemonList: LiveData<List<DatabasePokemon>> = pokedexRepository.pokemon
 
     val typeList: LiveData<List<DatabaseType>> = pokedexRepository.types
+
+    val moveList: LiveData<List<DatabaseMove>> = pokedexRepository.moves
+
+    val abilityList:LiveData<List<DatabaseAbility>> = pokedexRepository.abilities
 
     fun refreshDatabase(){
         viewModelScope.launch {

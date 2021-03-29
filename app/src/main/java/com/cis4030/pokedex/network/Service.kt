@@ -2,6 +2,8 @@ package com.cis4030.pokedex.network
 
 import com.cis4030.pokedex.network.datatransferobjects.ability.AbilityDTO
 import com.cis4030.pokedex.network.datatransferobjects.ability.AbilityListDTO
+import com.cis4030.pokedex.network.datatransferobjects.generation.GenerationDTO
+import com.cis4030.pokedex.network.datatransferobjects.generation.GenerationListDTO
 import com.cis4030.pokedex.network.datatransferobjects.move.MoveDTO
 import com.cis4030.pokedex.network.datatransferobjects.move.MoveListDTO
 import com.cis4030.pokedex.network.datatransferobjects.pokemon.PokemonDTO
@@ -43,6 +45,12 @@ interface PokeAPIService{
 
     @GET("move?limit=100000")
     suspend fun getMoves(): MoveListDTO
+
+    @GET("generation")
+    suspend fun getGenerations() : GenerationListDTO
+
+    @GET("generation/{name}")
+    suspend fun getGeneration(@Path("name")name:String) : GenerationDTO
 }
 
 object PokeAPINetwork {
