@@ -3,9 +3,11 @@ package com.cis4030.pokedex.ui.pokedex_list
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import com.cis4030.pokedex.R
 import com.cis4030.pokedex.databinding.FragmentListBinding
 import com.cis4030.pokedex.viewmodels.SharedViewModel
@@ -37,6 +39,14 @@ class PokedexListFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.list_fragment_menu,menu)
+        (menu.findItem(R.id.search_menu_button).actionView as SearchView).apply {
+            setOnQueryTextListener(PokemonQueryListener(viewModel))
+            viewModel.clearSearchText.observe(viewLifecycleOwner){
+                if(it){
+                    setQuery("",true)
+                }
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

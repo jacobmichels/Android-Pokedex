@@ -64,6 +64,13 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
 
     val abilityList:LiveData<List<DatabaseAbility>> = pokedexRepository.dbAbilities
 
+    val clearSearchText:LiveData<Boolean>
+            get() = _clearSearchText
+    private val _clearSearchText:MutableLiveData<Boolean> by lazy{
+        MutableLiveData<Boolean>()
+    }
+
+
     fun refreshDatabase(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
@@ -74,6 +81,15 @@ class SharedViewModel(application: Application): AndroidViewModel(application) {
 
     fun sortAndFilterPokemon(){
         pokedexRepository.reorganizePokemon(selectedOrder,generationsSelected,typesSelected)
+        _clearSearchText.value=true
+    }
+
+    fun textReset(){
+        _clearSearchText.value=null
+    }
+
+    fun searchPokemon(query:String){
+        pokedexRepository.searchPokemon(query,selectedOrder,generationsSelected,typesSelected)
     }
 
     fun displayPokemonDetails(pokemon: DatabasePokemon){

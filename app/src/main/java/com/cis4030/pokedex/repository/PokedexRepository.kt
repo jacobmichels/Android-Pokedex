@@ -121,7 +121,74 @@ class PokedexRepository(private val database: PokemonDatabase) {
                 }
             }
         }
+    }
 
+    fun searchPokemon(query:String,order: String, generationFilters:List<Int>, typeFilters: List<String>){
+        if(generationFilters.isNotEmpty() && typeFilters.isNotEmpty()){
+            when(order){
+                "ID Ascending"-> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdAsc(query,generationFilters, typeFilters))
+                }
+                "ID Descending" ->{
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdDsc(query,generationFilters,typeFilters))
+                }
+                "Name Ascending"->{
+                    setNewPokemonSource(database.pokemonDao.getPokemonByName(query,generationFilters,typeFilters))
+                }
+                "Name Descending"->{
+                    setNewPokemonSource(database.pokemonDao.getPokemonByNameDsc(query,generationFilters,typeFilters))
+                }
+            }
+        }
+        else if(generationFilters.isEmpty()) {
+            when (order) {
+                "ID Ascending" ->{
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdAsc(query,typeFilters))
+                }
+                "ID Descending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdDsc(query,typeFilters))
+                }
+                "Name Ascending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByName(query,typeFilters))
+                }
+                "Name Descending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByNameDsc(query,typeFilters))
+                }
+            }
+        }
+        else if(typeFilters.isEmpty()){
+            when (order) {
+                "ID Ascending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdAscGenerationFilter(query,generationFilters))
+                }
+                "ID Descending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdDscGenerationFilter(query,generationFilters))
+                }
+                "Name Ascending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByNameGenerationFilter(query,generationFilters))
+                }
+                "Name Descending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByNameDscGenerationFilter(query,generationFilters))
+                }
+            }
+        }
+        //both empty
+        else{
+            when (order) {
+                "ID Ascending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdAsc(query))
+                }
+                "ID Descending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByIdDsc(query))
+                }
+                "Name Ascending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByName(query))
+                }
+                "Name Descending" -> {
+                    setNewPokemonSource(database.pokemonDao.getPokemonByNameDsc(query))
+                }
+            }
+        }
     }
 
     private fun setNewPokemonSource(nextSource: LiveData<List<DatabasePokemon>>) {
