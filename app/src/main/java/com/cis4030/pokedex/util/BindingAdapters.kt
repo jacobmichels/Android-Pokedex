@@ -11,14 +11,32 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.cis4030.pokedex.R
+import com.cis4030.pokedex.database.DatabaseCustomMove
+import com.cis4030.pokedex.database.DatabaseCustomPokemon
 import com.cis4030.pokedex.database.DatabasePokemon
+import com.cis4030.pokedex.ui.pokedex_create.CreatePokemonMovelistAdapter
+import com.cis4030.pokedex.ui.pokedex_create.CustomPokemonGridAdapter
 import com.cis4030.pokedex.ui.pokedex_list.PokemonGridAdapter
 import com.google.android.material.chip.Chip
+import java.io.File
 
 @BindingAdapter("listData")
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<DatabasePokemon>?) {
     val adapter = recyclerView.adapter as PokemonGridAdapter
     adapter.submitList(data)
+}
+
+@BindingAdapter("listData")
+fun bindCustomRecyclerView(recyclerView: RecyclerView, data: List<DatabaseCustomPokemon>?) {
+    val adapter = recyclerView.adapter as CustomPokemonGridAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("imageName")
+fun bindImagename(imageView: ImageView, name: String){
+    val file = File(imageView.context.filesDir,name)
+    val bytes = file.readBytes()
+    imageView.setImageBitmap(byteArrayToBitmap(bytes))
 }
 
 /**
