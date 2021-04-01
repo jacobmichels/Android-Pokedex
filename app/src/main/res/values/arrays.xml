@@ -6,4 +6,24 @@
         <item>Name Ascending</item>
         <item>Name Descending</item>
     </string-array>
+    <string-array name="pokemon_types">
+        <item>Select Type</item>
+        <item>Normal</item>
+        <item>Fire</item>
+        <item>Fighting</item>
+        <item>Water</item>
+        <item>Flying</item>
+        <item>Grass</item>
+        <item>Poison</item>
+        <item>Electric</item>
+        <item>Ground</item>
+        <item>Psychic</item>
+        <item>Rock</item>
+        <item>Ice</item>
+        <item>Dragon</item>
+        <item>Ghost</item>
+        <item>Dark</item>
+        <item>Steel</item>
+        <item>Fairy</item>
+    </string-array>
 </resources>
