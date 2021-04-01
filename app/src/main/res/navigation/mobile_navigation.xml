@@ -13,13 +13,22 @@
 
     <fragment
         android:id="@+id/pokedex_create"
-        android:name="com.cis4030.pokedex.ui.pokedex_create.PokedexCreateFragment"
+        android:name="com.cis4030.pokedex.ui.pokedex_create.CustomPokemonListFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_team" />
+        tools:layout="@layout/fragment_creation_list" >
+        <action
+            android:id="@+id/action_pokedex_create_to_createPokemonFragment"
+            app:destination="@id/createPokemonFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/team_viewer"
         android:name="com.cis4030.pokedex.ui.team.TeamFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_create" />
+        />
+    <fragment
+        android:id="@+id/createPokemonFragment"
+        android:name="com.cis4030.pokedex.ui.pokedex_create.CreatePokemonFragment"
+        android:label="Create New Pokemon"
+        tools:layout="@layout/fragment_create_pokemon" />
 </navigation>
