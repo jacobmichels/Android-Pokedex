@@ -30,6 +30,8 @@ class PokedexRepository(private val database: PokemonDatabase) {
 
     val pokemonMediator = MediatorLiveData<List<DatabasePokemon>>()
 
+    val customPokemon:LiveData<List<DatabaseCustomPokemon>> = database.customPokemonDao.getPokemon()
+
     var currentSource: LiveData<List<DatabasePokemon>>
 
     init{
@@ -193,7 +195,7 @@ class PokedexRepository(private val database: PokemonDatabase) {
 
     private fun setNewPokemonSource(nextSource: LiveData<List<DatabasePokemon>>) {
         pokemonMediator.removeSource(currentSource)
-        pokemonMediator.value = null
+//        pokemonMediator.value = null
         currentSource = nextSource
         pokemonMediator.addSource(currentSource) {
             pokemonMediator.value = it
@@ -294,5 +296,17 @@ class PokedexRepository(private val database: PokemonDatabase) {
         }
         database.abilityDao.insertAll(abilitiesToInsert)
         Log.d("POKEDEX","Inserted all fetched abilities.")
+    }
+
+    suspend fun insertCustomPokemon(pokemon:DatabaseCustomPokemon){
+        database.customPokemonDao.insertOne(pokemon)
+    }
+
+    suspend fun insertCustomMoves(moves:List<DatabaseCustomMove>){
+        database.customMoveDao.insertAll(moves)
+    }
+
+    suspend fun getCustomPokemon():List<DatabaseCustomPokemon>{
+        return database.customPokemonDao.getPokemonList()
     }
 }
