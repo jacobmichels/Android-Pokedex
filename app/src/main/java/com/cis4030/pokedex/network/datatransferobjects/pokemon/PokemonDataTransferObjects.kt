@@ -1,10 +1,9 @@
 package com.cis4030.pokedex.network.datatransferobjects.pokemon
 
-import android.util.Log
 import com.cis4030.pokedex.database.DatabasePokemon
-import com.cis4030.pokedex.util.getColor
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.lang.IndexOutOfBoundsException
 
 @JsonClass(generateAdapter = true)
 data class PokemonDTO(
@@ -343,9 +342,15 @@ data class PokemonListDTO(
 )
 
 fun PokemonDTO.asDatabaseModel(): DatabasePokemon {
+    val type2 = try {
+        this.types[1].type.name.capitalize()
+    } catch (e: IndexOutOfBoundsException){
+        null
+    }
+
     return DatabasePokemon(
-        id=this.id,
-        name=this.name.capitalize(),
+        id =this.id,
+        name =this.name.capitalize(),
         height = this.height,
         weight = this.weight,
         imageUrl = this.sprites.other.officialArtwork.front_default ?: "",
@@ -360,11 +365,11 @@ fun PokemonDTO.asDatabaseModel(): DatabasePokemon {
         spDfn = this.stats[4].base_stat,
         speed = this.stats[5].base_stat,
         type1 = this.types[0].type.name.capitalize(),
-        type2 = this.types[0].type.name.capitalize(),
+        type2 = type2,
         possibleMoves = this.moves.map{
             it.move.name.capitalize()
         },
-        custom=false,
+        custom =false,
         generation = -1,
         speciesName = this.species.name
     )
