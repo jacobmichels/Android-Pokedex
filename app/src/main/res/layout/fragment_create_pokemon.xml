@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        <variable
+            name="viewModel"
+            type="com.cis4030.pokedex.viewmodels.CreatePokemonViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlinedTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="332dp"
+                android:layout_height="57dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:hint="Name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/pokemon_image"
+                android:layout_width="263dp"
+                android:layout_height="227dp"
+                android:layout_marginTop="33dp"
+                android:layout_marginEnd="100dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/outlinedTextField"
+                app:srcCompat="@drawable/ic_broken_image"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Types"
+                android:textSize="17dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pokemon_image" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="128dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Base Stats"
+                android:textSize="17dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pokemon_image" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="27dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Moves"
+                android:textSize="17dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description_text" />
+
+            <Spinner
+                android:id="@+id/type_2_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="228dp"
+                android:layout_marginTop="80dp"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pokemon_image" />
+
+            <Spinner
+                android:id="@+id/type_1_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="80dp"
+                android:dropDownWidth="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pokemon_image" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="112dp"
+                android:layout_marginTop="48dp"
+                android:text="Type 1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pokemon_image" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="92dp"
+                android:layout_marginTop="48dp"
+                android:text="Type 2"
+                app:layout_constraintStart_toEndOf="@+id/textView5"
+                app:layout_constraintTop_toBottomOf="@+id/pokemon_image" />
+
+            <SeekBar
+                android:id="@+id/def_seekbar"
+                android:layout_width="290dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="12dp"
+                android:progress="5"
+                android:min="5"
+                android:max="255"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.561"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/atk_seekbar" />
+
+            <SeekBar
+                android:id="@+id/sp_atk_seekbar"
+                android:layout_width="290dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="12dp"
+                android:min="5"
+                android:max="255"
+                android:progress="5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.561"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/def_seekbar" />
+
+            <SeekBar
+                android:id="@+id/sp_def_seekbar"
+                android:layout_width="290dp"
+                android:progress="5"
+                android:layout_height="24dp"
+                android:layout_marginTop="12dp"
+                android:min="5"
+                android:max="255"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.561"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sp_atk_seekbar" />
+
+            <SeekBar
+                android:id="@+id/spd_seekbar"
+                android:layout_width="290dp"
+                android:layout_height="24dp"
+                android:progress="5"
+                android:layout_marginTop="12dp"
+                android:min="5"
+                android:max="255"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.561"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sp_def_seekbar" />
+
+            <SeekBar
+                android:id="@+id/atk_seekbar"
+                android:layout_width="290dp"
+                android:layout_height="24dp"
+                android:progress="5"
+                android:layout_marginTop="12dp"
+                android:min="5"
+                android:max="255"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.561"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hp_seekbar" />
+
+            <SeekBar
+                android:id="@+id/hp_seekbar"
+                android:layout_width="290dp"
+                android:layout_height="24dp"
+                android:progress="5"
+                android:layout_marginTop="520dp"
+                android:max="255"
+                android:min="5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.561"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="54dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="8dp"
+                android:text="DEF"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/def_seekbar"
+                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="54dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="8dp"
+                android:text="ATK"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/atk_seekbar"
+                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="54dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="520dp"
+                android:layout_marginEnd="8dp"
+                android:text="HP"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/hp_seekbar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="54dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="8dp"
+                android:text="SP ATK"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/sp_atk_seekbar"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="54dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="8dp"
+                android:text="SP DEF"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/sp_def_seekbar"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="54dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="8dp"
+                android:text="SPD"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/spd_seekbar"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <EditText
+                android:id="@+id/hp_text"
+                android:layout_width="35dp"
+                android:layout_height="31dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="520dp"
+                android:ems="10"
+                android:inputType="number"
+                android:numeric="integer"
+                android:text="5"
+                android:textColor="#000000"
+                android:textSize="10sp"
+                app:layout_constraintStart_toEndOf="@+id/hp_seekbar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/atk_text"
+                android:layout_width="35dp"
+                android:layout_height="31dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="556dp"
+                android:ems="10"
+                android:inputType="number"
+                android:text="5"
+                android:textColor="#000000"
+                android:textSize="10sp"
+                app:layout_constraintStart_toEndOf="@+id/hp_seekbar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/def_text"
+                android:layout_width="35dp"
+                android:layout_height="31dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="592dp"
+                android:ems="10"
+                android:inputType="number"
+                android:text="5"
+                android:textColor="#000000"
+                android:textSize="10sp"
+                app:layout_constraintStart_toEndOf="@+id/hp_seekbar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/sp_atk_text"
+                android:layout_width="35dp"
+                android:layout_height="31dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="628dp"
+                android:ems="10"
+                android:inputType="number"
+                android:text="5"
+                android:textColor="#000000"
+                android:textSize="10sp"
+                app:layout_constraintStart_toEndOf="@+id/hp_seekbar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/sp_def_text"
+                android:layout_width="35dp"
+                android:layout_height="31dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="664dp"
+                android:ems="10"
+                android:inputType="number"
+                android:text="5"
+                android:textColor="#000000"
+                android:textSize="10sp"
+                app:layout_constraintStart_toEndOf="@+id/hp_seekbar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/spd_text"
+                android:layout_width="35dp"
+                android:layout_height="31dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="700dp"
+                android:ems="10"
+                android:inputType="number"
+                android:text="5"
+                android:textColor="#000000"
+                android:textSize="10sp"
+                app:layout_constraintStart_toEndOf="@+id/hp_seekbar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/description_text"
+                android:layout_width="370dp"
+                android:layout_height="102dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="Pokemon Description"
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:maxLines="4"
+                android:minLines="2"
+                android:scrollbars="vertical"
+                android:singleLine="false"
+                android:textColorHighlight="@color/alternate_red"
+                android:textColorLink="@color/alternate_red"
+                android:textCursorDrawable="@color/alternate_red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.487"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spd_seekbar" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/custom_pokemon_movelist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4"
+                tools:listitem="@layout/custom_pokemon_movelist_item"/>
+
+            <Button
+                android:id="@+id/add_move_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="52dp"
+                android:text="Add Move"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description_text" />
+
+            <Button
+                android:id="@+id/done_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="30dp"
+                android:text="Create Pokemon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/custom_pokemon_movelist" />
+
+            <Button
+                android:id="@+id/select_image_button"
+                android:layout_width="91dp"
+                android:layout_height="74dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="188dp"
+                android:text="Select Image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/pokemon_image"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</layout>
