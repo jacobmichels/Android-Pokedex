@@ -76,7 +76,7 @@
             android:fontFamily="@font/roboto_medium"
             android:textColor="@color/white"
             android:text="@{pokemon.type2}"
-            android:visibility="@{pokemon.type2==null ? View.VISIBLE : View.GONE}"
+            android:visibility="@{pokemon.type2!=null ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Poison" />
