@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.cis4030.pokedex.R
@@ -29,6 +30,9 @@ class PokedexListFragment : Fragment() {
             viewModel.displayPokemonDetails(it)     //onclick, call this function
         })
         binding.pokemonGrid.addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.item_margin)))
+        viewModel.pokemonList.observe(viewLifecycleOwner){
+            binding.noPokemonText.isVisible = it.isEmpty()
+        }
 
         setHasOptionsMenu(true)     //use an options menu
 

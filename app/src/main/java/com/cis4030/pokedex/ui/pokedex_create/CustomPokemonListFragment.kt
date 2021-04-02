@@ -1,8 +1,10 @@
 package com.cis4030.pokedex.ui.pokedex_create
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -29,6 +31,10 @@ class CustomPokemonListFragment : Fragment() {
             viewModel.displayPokemonDetails(it)     //onclick, call this function
         })
         binding.customPokemonGrid.addItemDecoration(LinearMarginItemDecoration(resources.getDimensionPixelSize(R.dimen.item_margin)))
+
+        viewModel.customPokemon.observe(viewLifecycleOwner){
+            binding.noCustomPokemonText.isVisible = it.isEmpty()
+        }
 
         (activity as AppCompatActivity?)?.supportActionBar?.title="My Pokemon"
 
