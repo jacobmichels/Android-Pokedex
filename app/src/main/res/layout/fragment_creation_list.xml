@@ -14,11 +14,12 @@
 
         <TextView
             android:id="@+id/no_custom_pokemon_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:text="You currenly have no custom Pokemon to display. To create one, click the + button in the top right."
             android:textAlignment="center"
-            android:textColor="@color/black"
             android:textSize="20dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/custom_pokemon_grid"
