@@ -12,7 +12,106 @@ import androidx.room.*
 @Dao
 interface PokemonDao {
     @Query("select * from databasepokemon order by id asc")
-    fun getPokemon():LiveData<List<DatabasePokemon>>
+    fun getPokemonByIdAsc():LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query order by id asc")
+    fun getPokemonByIdAsc(query: String):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon order by id desc")
+    fun getPokemonByIdDsc():LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query order by id desc")
+    fun getPokemonByIdDsc(query: String):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where generation in (:generationFilters) and type1 in (:typeFilters) order by id asc")
+    fun getPokemonByIdAsc(generationFilters:List<Int>, typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query and generation in (:generationFilters) and type1 in (:typeFilters) order by id asc")
+    fun getPokemonByIdAsc(query: String, generationFilters:List<Int>, typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where generation in (:generationFilters) and type1 in (:typeFilters) order by id desc")
+    fun getPokemonByIdDsc(generationFilters:List<Int>, typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query and generation in (:generationFilters) and type1 in (:typeFilters) order by id desc")
+    fun getPokemonByIdDsc(query: String,generationFilters:List<Int>, typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where type1 in (:typeFilters) order by id asc")
+    fun getPokemonByIdAsc(typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query and type1 in (:typeFilters) order by id asc")
+    fun getPokemonByIdAsc(query:String, typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where type1 in (:typeFilters) order by id desc")
+    fun getPokemonByIdDsc(typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query and type1 in (:typeFilters) order by id desc")
+    fun getPokemonByIdDsc(query: String,typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where generation in (:generationFilters) order by id asc")
+    fun getPokemonByIdAscGenerationFilter(generationFilters:List<Int>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query and generation in (:generationFilters) order by id asc")
+    fun getPokemonByIdAscGenerationFilter(query: String, generationFilters:List<Int>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where generation in (:generationFilters) order by id desc")
+    fun getPokemonByIdDscGenerationFilter(generationFilters:List<Int>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query and generation in (:generationFilters) order by id desc")
+    fun getPokemonByIdDscGenerationFilter(query: String,generationFilters:List<Int>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon order by name asc")
+    fun getPokemonByName():LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query order by name asc")
+    fun getPokemonByName(query: String):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon order by name desc")
+    fun getPokemonByNameDsc():LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query order by name desc")
+    fun getPokemonByNameDsc(query: String):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where generation in (:generationFilters) and type1 in (:typeFilters) order by name asc")
+    fun getPokemonByName(generationFilters:List<Int>, typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query and generation in (:generationFilters) and type1 in (:typeFilters) order by name asc")
+    fun getPokemonByName(query: String, generationFilters: List<Int>, typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where generation in (:generationFilters) and type1 in (:typeFilters) order by name desc")
+    fun getPokemonByNameDsc(generationFilters:List<Int>, typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query and generation in (:generationFilters) and type1 in (:typeFilters) order by name desc")
+    fun getPokemonByNameDsc(query: String, generationFilters:List<Int>, typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where type1 in (:typeFilters) order by name asc")
+    fun getPokemonByName(typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query and type1 in (:typeFilters) order by name asc")
+    fun getPokemonByName(query: String, typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where type1 in (:typeFilters) order by name desc")
+    fun getPokemonByNameDsc(typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query and type1 in (:typeFilters) order by name desc")
+    fun getPokemonByNameDsc(query: String, typeFilters: List<String>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where generation in (:generationFilters) order by name asc")
+    fun getPokemonByNameGenerationFilter(generationFilters:List<Int>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query and generation in (:generationFilters) order by name asc")
+    fun getPokemonByNameGenerationFilter(query: String, generationFilters:List<Int>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where generation in (:generationFilters) order by name desc")
+    fun getPokemonByNameDscGenerationFilter(generationFilters:List<Int>):LiveData<List<DatabasePokemon>>
+
+    @Query("select * from databasepokemon where name like :query and generation in (:generationFilters) order by name desc")
+    fun getPokemonByNameDscGenerationFilter(query: String, generationFilters:List<Int>):LiveData<List<DatabasePokemon>>
+
+//    @Query("select * from databasepokemon where generation in (:generationFilters) and type1 in (:typeFilters) order by id desc")
+//    fun getPokemonByType():LiveData<List<DatabasePokemon>>
+//
+//    @Query("select * from databasepokemon where generation in (:generationFilters) and type1 in (:typeFilters) order by types desc")
+//    fun getPokemonByTypeDsc():LiveData<List<DatabasePokemon>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(pokemon:List<DatabasePokemon>)
@@ -60,7 +159,7 @@ interface TypeDao {
 /**
  * This is the database class. Here we define the data types to store in the database, as well as references to the Daos.
  */
-@Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class], version = 11)
+@Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class], version = 12)
 @TypeConverters(ListTypeConverters::class)
 abstract class PokemonDatabase:RoomDatabase(){
     abstract val pokemonDao:PokemonDao

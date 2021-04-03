@@ -59,7 +59,7 @@
             android:layout_marginTop="92dp"
             android:fontFamily="@font/roboto_medium"
             android:textColor="@color/white"
-            android:text="@{pokemon.types[0]}"
+            android:text="@{pokemon.type1}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Grass" />
@@ -75,8 +75,8 @@
             android:layout_marginTop="120dp"
             android:fontFamily="@font/roboto_medium"
             android:textColor="@color/white"
-            android:text="@{pokemon.types[1]}"
-            android:visibility="@{pokemon.types.size()>1 ? View.VISIBLE : View.GONE}"
+            android:text="@{pokemon.type2}"
+            android:visibility="@{pokemon.type2==null ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Poison" />
