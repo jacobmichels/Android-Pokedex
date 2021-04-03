@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/team_viewer"
-        android:name="com.cis4030.pokedex.ui.team.TeamFragment"
+        android:name="com.cis4030.pokedex.ui.team.TeamListFragment"
         android:label="@string/title_notifications"
         />
     <fragment

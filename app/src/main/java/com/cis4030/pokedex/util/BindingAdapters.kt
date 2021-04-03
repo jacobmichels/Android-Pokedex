@@ -14,9 +14,11 @@ import com.cis4030.pokedex.R
 import com.cis4030.pokedex.database.DatabaseCustomMove
 import com.cis4030.pokedex.database.DatabaseCustomPokemon
 import com.cis4030.pokedex.database.DatabasePokemon
+import com.cis4030.pokedex.database.DatabaseTeam
 import com.cis4030.pokedex.ui.pokedex_create.CreatePokemonMovelistAdapter
 import com.cis4030.pokedex.ui.pokedex_create.CustomPokemonGridAdapter
 import com.cis4030.pokedex.ui.pokedex_list.PokemonGridAdapter
+import com.cis4030.pokedex.ui.team.TeamsListAdapater
 import com.google.android.material.chip.Chip
 import java.io.File
 
@@ -29,6 +31,12 @@ fun bindRecyclerView(recyclerView: RecyclerView, data: List<DatabasePokemon>?) {
 @BindingAdapter("listData")
 fun bindCustomRecyclerView(recyclerView: RecyclerView, data: List<DatabaseCustomPokemon>?) {
     val adapter = recyclerView.adapter as CustomPokemonGridAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("listData")
+fun bindTeamRecyclerView(recyclerView: RecyclerView, data: List<DatabaseTeam>?){
+    val adapter = recyclerView.adapter as TeamsListAdapater
     adapter.submitList(data)
 }
 

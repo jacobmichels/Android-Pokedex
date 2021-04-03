@@ -180,10 +180,19 @@ interface CustomMoveDao {
     suspend fun insertAll(moves: List<DatabaseCustomMove>)
 }
 
+@Dao
+interface TeamDao{
+    @Query("select * from databaseteam")
+    fun getTeams():LiveData<List<DatabaseTeam>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertOne(team: DatabaseTeam)
+}
+
 /**
  * This is the database class. Here we define the data types to store in the database, as well as references to the Daos.
  */
-@Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class, DatabaseCustomPokemon::class,DatabaseCustomMove::class], version = 14)
+@Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class, DatabaseCustomPokemon::class,DatabaseCustomMove::class, DatabaseTeam::class], version = 15)
 @TypeConverters(ListTypeConverters::class)
 abstract class PokemonDatabase:RoomDatabase(){
     abstract val pokemonDao:PokemonDao
@@ -192,6 +201,7 @@ abstract class PokemonDatabase:RoomDatabase(){
     abstract val typeDao: TypeDao
     abstract val customPokemonDao: CustomPokemonDao
     abstract val customMoveDao: CustomMoveDao
+    abstract val teamDao: TeamDao
 }
 
 private lateinit var INSTANCE:PokemonDatabase

@@ -80,6 +80,10 @@ fun getTypeColor(typename: String): Int {
     }
 }
 
+fun getTeamBackground():Int{
+    return R.drawable.team_rounded_corners
+}
+
 fun getBitmapFromUri(context: Context, uri:Uri): Bitmap? {
     try{
         val input = context.contentResolver.openInputStream(uri) ?: return null

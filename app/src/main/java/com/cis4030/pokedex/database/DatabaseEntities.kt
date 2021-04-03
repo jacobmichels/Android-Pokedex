@@ -90,3 +90,15 @@ data class DatabaseCustomPokemon constructor(
     val type2: String?,
     val moves: List<String>
 )
+
+@Entity
+data class DatabaseTeam constructor(
+    @PrimaryKey
+    val name: String,
+    val pokemon1Name:String?,
+    val pokemon2Name:String?,
+    val pokemon3Name:String?,
+    val pokemon4Name:String?,
+    val pokemon5Name:String?,
+    val pokemon6Name:String?,
+)

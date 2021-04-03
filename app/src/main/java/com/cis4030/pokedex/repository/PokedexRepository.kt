@@ -32,6 +32,8 @@ class PokedexRepository(private val database: PokemonDatabase) {
 
     val customPokemon:LiveData<List<DatabaseCustomPokemon>> = database.customPokemonDao.getPokemon()
 
+    val teams: LiveData<List<DatabaseTeam>> = database.teamDao.getTeams()
+
     var currentSource: LiveData<List<DatabasePokemon>>
 
     init{
