@@ -8,7 +8,9 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import com.cis4030.pokedex.R
+import com.cis4030.pokedex.database.DatabasePokemon
 import com.cis4030.pokedex.databinding.FragmentListBinding
 import com.cis4030.pokedex.viewmodels.SharedViewModel
 
@@ -25,10 +27,13 @@ class PokedexListFragment : Fragment() {
         val binding: FragmentListBinding = FragmentListBinding.inflate(inflater)
         binding.lifecycleOwner=this
         binding.viewModel=viewModel
+
         //add the PokemonGridAdapter, which is responsible for mapping pokemon data to the recyclerview
         binding.pokemonGrid.adapter = PokemonGridAdapter(PokemonGridAdapter.OnClickListener{
-            viewModel.displayPokemonDetails(it)     //onclick, call this function
+//            viewModel.displayPokemonDetails(it)    //onclick, call this function,
+            view?.let { it1 -> displayPokemonDetails(it, it1) }
         })
+
         binding.pokemonGrid.addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.item_margin)))
         viewModel.pokemonList.observe(viewLifecycleOwner){
             binding.noPokemonText.isVisible = it.isEmpty()
@@ -82,5 +87,11 @@ class PokedexListFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    // goto the detail view from this view.
+    private fun displayPokemonDetails(pokemon: DatabasePokemon, view:View) {
+        Log.d("detail", "Pokemon clicked " + pokemon.name)
+        view.findNavController().navigate(PokedexListFragmentDirections.actionPokedexHomeToPokemonDetailFragment(pokemon.id))
     }
 }
