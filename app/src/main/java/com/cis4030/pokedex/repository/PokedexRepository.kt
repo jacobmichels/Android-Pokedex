@@ -311,4 +311,8 @@ class PokedexRepository(private val database: PokemonDatabase) {
     suspend fun getCustomPokemon():List<DatabaseCustomPokemon>{
         return database.customPokemonDao.getPokemonList()
     }
+
+    fun insertTeam(team:DatabaseTeam){
+        database.teamDao.insertOne(team)
+    }
 }
