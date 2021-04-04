@@ -25,10 +25,20 @@
         android:id="@+id/team_viewer"
         android:name="com.cis4030.pokedex.ui.team.TeamListFragment"
         android:label="@string/title_notifications"
-        />
+        tools:layout="@layout/fragment_team_list"
+        >
+        <action
+            android:id="@+id/action_team_viewer_to_teamViewFragment"
+            app:destination="@id/teamViewFragment" />
+    </fragment>
     <fragment
         android:id="@+id/createPokemonFragment"
         android:name="com.cis4030.pokedex.ui.pokedex_create.CreatePokemonFragment"
         android:label="Create New Pokemon"
         tools:layout="@layout/fragment_create_pokemon" />
+    <fragment
+        android:id="@+id/teamViewFragment"
+        android:name="com.cis4030.pokedex.ui.team.TeamViewFragment"
+        android:label="TeamViewFragment"
+        tools:layout="@layout/fragment_team_view"/>
 </navigation>
