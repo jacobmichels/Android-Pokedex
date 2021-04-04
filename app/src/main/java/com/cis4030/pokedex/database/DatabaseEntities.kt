@@ -101,4 +101,5 @@ data class DatabaseTeam constructor(
     val pokemon4Name:String?,
     val pokemon5Name:String?,
     val pokemon6Name:String?,
+    val isEmpty: Boolean
 )
