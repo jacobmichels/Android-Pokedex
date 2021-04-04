@@ -3,6 +3,7 @@ package com.cis4030.pokedex.ui.team
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.cis4030.pokedex.databinding.NewTeamDialogBinding
