@@ -192,7 +192,7 @@ interface TeamDao{
 /**
  * This is the database class. Here we define the data types to store in the database, as well as references to the Daos.
  */
-@Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class, DatabaseCustomPokemon::class,DatabaseCustomMove::class, DatabaseTeam::class], version = 15)
+@Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class, DatabaseCustomPokemon::class,DatabaseCustomMove::class, DatabaseTeam::class], version = 16)
 @TypeConverters(ListTypeConverters::class)
 abstract class PokemonDatabase:RoomDatabase(){
     abstract val pokemonDao:PokemonDao
