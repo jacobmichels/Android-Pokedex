@@ -27,6 +27,23 @@
     <color name="dark">#8f857f</color>
     <color name="steel">#b8b8d0</color>
     <color name="fairy">#ffa1dc</color>
+    <color name="unknown">#68a090</color>
     <color name="unchecked_chip">#e5e5e5</color>
     <color name="dialog_button_text">#FFFFFF</color>
+    <color name ="egg_monster">#d25064</color>
+    <color name ="egg_human">#d29682</color>
+    <color name ="egg_water1">#97b5fd</color>
+    <color name ="egg_water2">#729afa</color>
+    <color name ="egg_water3">#5876bf</color>
+    <color name ="egg_bug">#aac22a</color>
+    <color name ="egg_flying">#b29afa</color>
+    <color name ="egg_field">#e0c067</color>
+    <color name ="egg_fairy">#fdc8f0</color>
+    <color name ="egg_grass">#82d25a</color>
+    <color name ="egg_no_eggs_discovered">#333333</color>
+    <color name ="egg_gender_unknown">#3180c0</color>
+    <color name ="egg_mineral">#7a6252</color>
+    <color name ="egg_amorphous">#8a8a8a</color>
+    <color name ="egg_ditto">#a664bf</color>
+    <color name ="egg_dragon">#7a42ff</color>
 </resources>
