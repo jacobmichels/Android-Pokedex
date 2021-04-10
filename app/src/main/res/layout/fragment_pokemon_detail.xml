@@ -95,6 +95,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +105,8 @@
                         android:id="@+id/description_container"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingTop="20dp">
 
                         <TextView
                             android:id="@+id/description_header"
@@ -127,7 +129,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:paddingVertical="10dp">
+                        android:paddingTop="20dp">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -141,7 +143,6 @@
                                 android:orientation="horizontal"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.16"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
@@ -162,6 +163,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="100dp"
                                 android:backgroundTint="@color/bg_chip_water"
+                                android:clickable="false"
                                 android:minWidth="0dp"
                                 android:minHeight="0dp"
                                 android:textAlignment="center"
@@ -176,6 +178,7 @@
                                 android:id="@+id/egg_group_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:clickable="false"
                                 android:minWidth="0dp"
                                 android:minHeight="0dp"
                                 android:textAlignment="center"
@@ -190,6 +193,82 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/height_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingTop="20dp">
+
+                        <TextView
+                            android:id="@+id/height_label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/height_label" />
+
+                        <TextView
+                            android:id="@+id/height_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/weight_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingTop="20dp">
+
+                        <TextView
+                            android:id="@+id/weight_label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/weight_label" />
+
+                        <TextView
+                            android:id="@+id/weight_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/habitat_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingTop="20dp">
+
+                        <TextView
+                            android:id="@+id/habitat_label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/habitat_label" />
+
+                        <TextView
+                            android:id="@+id/habitat_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/growth_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingTop="20dp">
+
+                        <TextView
+                            android:id="@+id/growth_label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/growth_label" />
+
+                        <TextView
+                            android:id="@+id/growth_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -201,13 +280,278 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:visibility="invisible">
+                    tools:visibility="visible">
 
-                    <Button
-                        android:id="@+id/button2"
+                    <TextView
+                        android:id="@+id/stats_header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="stats data" />
+                        android:layout_marginTop="8dp"
+                        android:text="@string/stats_header"
+                        android:textColor="@color/black"
+                        android:textSize="30dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/hp_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/hp_label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/hp_label"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="25dp"
+                            tools:ignore="RtlCompat" />
+
+                        <Space
+                            android:id="@+id/hp_space"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical" />
+
+                        <Button
+                            android:id="@+id/hp_bar"
+                            android:layout_width="220dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0"
+                            android:clickable="false"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:letterSpacing="0"
+                            android:minWidth="0dip"
+                            android:minHeight="0dip"
+                            android:textAlignment="viewStart"
+                            android:textSize="18sp"
+                            app:cornerRadius="20dp"
+                            app:iconPadding="0dp"
+                            tools:ignore="RtlCompat" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/atk_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/atk_label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/atk_label"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="25dp"
+                            tools:ignore="RtlCompat" />
+
+                        <Space
+                            android:id="@+id/atk_space"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0" />
+
+                        <Button
+                            android:id="@+id/atk_bar"
+                            android:layout_width="90dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0"
+                            android:clickable="false"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:letterSpacing="0"
+                            android:minWidth="0dip"
+                            android:minHeight="0dip"
+                            android:textAlignment="viewStart"
+                            android:textSize="18sp"
+                            app:cornerRadius="20dp"
+                            app:iconPadding="0dp"
+                            tools:ignore="RtlCompat" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/def_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/def_label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/def_label"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="25dp"
+                            tools:ignore="RtlCompat" />
+
+                        <Space
+                            android:id="@+id/def_space"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0" />
+
+                        <Button
+                            android:id="@+id/def_bar"
+                            android:layout_width="90dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0"
+                            android:clickable="false"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:letterSpacing="0"
+                            android:minWidth="0dip"
+                            android:minHeight="0dip"
+                            android:textAlignment="viewStart"
+                            android:textSize="18sp"
+                            app:cornerRadius="20dp"
+                            app:iconPadding="0dp"
+                            tools:ignore="RtlCompat" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/sp_atk_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/sp_atk_label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/sp_atk_label"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="25dp"
+                            tools:ignore="RtlCompat" />
+
+                        <Space
+                            android:id="@+id/sp_atk_space"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0" />
+
+                        <Button
+                            android:id="@+id/sp_atk_bar"
+                            android:layout_width="90dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0"
+                            android:clickable="false"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:letterSpacing="0"
+                            android:minWidth="0dip"
+                            android:minHeight="0dip"
+                            android:textAlignment="viewStart"
+                            android:textSize="18sp"
+                            app:cornerRadius="20dp"
+                            app:iconPadding="0dp"
+                            tools:ignore="RtlCompat" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/sp_def_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/sp_def_label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/sp_def_label"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="25dp"
+                            tools:ignore="RtlCompat" />
+
+                        <Space
+                            android:id="@+id/sp_def_space"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0" />
+
+                        <Button
+                            android:id="@+id/sp_def_bar"
+                            android:layout_width="90dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0"
+                            android:clickable="false"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:letterSpacing="0"
+                            android:minWidth="0dip"
+                            android:minHeight="0dip"
+                            android:textAlignment="viewStart"
+                            android:textSize="18sp"
+                            app:cornerRadius="20dp"
+                            app:iconPadding="0dp"
+                            tools:ignore="RtlCompat" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/spd_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/spd_label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/spd_label"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/black"
+                            android:textSize="25dp"
+                            tools:ignore="RtlCompat" />
+
+                        <Space
+                            android:id="@+id/spd_space"
+                            android:layout_width="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0" />
+
+                        <Button
+                            android:id="@+id/spd_bar"
+                            android:layout_width="90dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0"
+                            android:clickable="false"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:letterSpacing="0"
+                            android:minWidth="0dip"
+                            android:minHeight="0dip"
+                            android:textAlignment="viewStart"
+                            android:textSize="18sp"
+                            app:cornerRadius="20dp"
+                            app:iconPadding="0dp"
+                            tools:ignore="RtlCompat" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout

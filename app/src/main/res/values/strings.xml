@@ -19,4 +19,15 @@
     <string name="evolutions">Evolutions</string>
     <string name="about_description_header">Description</string>
     <string name="egg_group_header">Egg Group</string>
+    <string name="height_label">Height</string>
+    <string name="weight_label">Weight</string>
+    <string name="habitat_label">Habitat</string>
+    <string name="growth_label">Growth Rate</string>
+    <string name="stats_header">Base Statistics</string>
+    <string name="hp_label">HP</string>
+    <string name="atk_label">ATK</string>
+    <string name="def_label">DEF</string>
+    <string name="sp_atk_label">SP ATK</string>
+    <string name="sp_def_label">SP DEF</string>
+    <string name="spd_label">SPD</string>
 </resources>

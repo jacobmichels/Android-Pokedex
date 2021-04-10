@@ -30,6 +30,7 @@ import me.sargunvohra.lib.pokekotlin.model.Pokemon
 import me.sargunvohra.lib.pokekotlin.model.PokemonSpecies
 
 import kotlin.math.round
+import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 
@@ -46,6 +47,8 @@ private const val ARG_PARAM2 = "param2"
 class PokemonDetailFragment : Fragment() {
     private var elevation:Float? = null
     private var statusBarColorOriginal:Int = 0
+    private var primaryColor by Delegates.notNull<Int>()
+
 
     private var pokemonID: Int = 0
     private val idKey:String = "pokemonID"
@@ -60,34 +63,26 @@ class PokemonDetailFragment : Fragment() {
     private lateinit var description:String
     private lateinit var growthRate:String
     private lateinit var habitat:String
-
-    //in meters
-    private lateinit var height:String
-
-    //in kilograms
-    private lateinit var weight:String
-
+    private lateinit var height:String //in meters
+    private lateinit var weight:String //in kilograms
     private var eggGroup:ArrayList<String> = arrayListOf()
     private var heightNum:Float = 0.0f
     private var weightNum:Float = 0.0f
 
-    private var primaryColor by Delegates.notNull<Int>()
+    //pokemon stats
+    private var hp:Int = 0
+    private var atk:Int = 0
+    private var def:Int = 0
+    private var sp_atk:Int = 0
+    private var sp_def:Int = 0
+    private var spd:Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+
+
             pokemonID = it.getInt(idKey)
-
-
-//            pokeDB = getDatabase(requireContext())
-//            println(pokeDB)
-//
-//            var thePokemon = pokeDB.pokemonDao.getPokemonByIdNum(pokemonID)
-//
-//            println("HERE:::" + thePokemon.toString())
-
-
-            //just debug stuff for now, will put this into a class or something.
 
             //need this to make the api calls
             val policy = StrictMode.ThreadPolicy.Builder()
@@ -102,10 +97,6 @@ class PokemonDetailFragment : Fragment() {
             // need to know what generations the pokemon is in, 10 is FireRed description but it wont work for all of them.
             name = pokemonSpecies!!.name
 
-//            type = pokemon!!.types[0].type.name
-//            for(type: pokemon!!.types) {
-//
-//        }
             for(pokemonType in pokemon!!.types) {
                 type.add(pokemonType.type.name)
             }
@@ -126,17 +117,9 @@ class PokemonDetailFragment : Fragment() {
             weight = "$weightNum kg"
             height = "$heightNum m"
 
-            Log.d("detail", description)
-            Log.d("detail", growthRate)
-            Log.d("detail", habitat)
-            Log.d("detail", weight)
-            Log.d("detail", height)
 
-            for(element in eggGroup) {
-                Log.d("detail", element)
-            }
-
-//            println(pokemon!!.flavorTextEntries[10].flavorText)
+            //get the data for the stats screen
+            retrievePokemonStats()
 
         }
     }
@@ -145,11 +128,6 @@ class PokemonDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // Inflate the layout for this fragment
-//        var nameView:TextView = requireView().findViewById(R.id.pokemon_detail_view_name)
-//        nameView.text = this.name;
-
         return inflater.inflate(R.layout.fragment_pokemon_detail, container, false)
     }
 
@@ -158,6 +136,7 @@ class PokemonDetailFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
+        //set the title on teh action bar
         (activity as MainActivity).supportActionBar?.title = this.name.capitalize()
 
         determinePrimaryColor()
@@ -168,14 +147,12 @@ class PokemonDetailFragment : Fragment() {
 
         populateAboutSection(view)
 
-        // populate the stats section
+        populateStatsSection(view)
 
         // populate the moves section
 
         // populate the evolutions section
         initView(view)
-
-
     }
 
     companion object {
@@ -250,25 +227,19 @@ class PokemonDetailFragment : Fragment() {
         about.setOnCheckedChangeListener{_, isChecked->
 
             if(isChecked) {
-
                 stats.isChecked = false
                 moves.isChecked = false
                 evo.isChecked = false
                 about.isClickable = false
 
-
                 //make about content visible, hide the other stuff
                 aboutContent.visibility = View.VISIBLE
-
-
             }
 
             else {
                 about.isClickable = true
                 aboutContent.visibility = View.GONE
-
             }
-
         }
 
         //set the stats button listener
@@ -287,9 +258,7 @@ class PokemonDetailFragment : Fragment() {
             else {
                 stats.isClickable = true
                 statsContent.visibility = View.GONE
-
             }
-
         }
 
 
@@ -301,8 +270,6 @@ class PokemonDetailFragment : Fragment() {
                 stats.isChecked = false
                 evo.isChecked = false
                 moves.isClickable = false
-
-
                 movesContent.visibility = View.VISIBLE
             }
 
@@ -310,9 +277,7 @@ class PokemonDetailFragment : Fragment() {
                 moves.isClickable = true
                 movesContent.visibility = View.GONE
             }
-
         }
-
 
         //set the evolution button listener
         evo.setOnCheckedChangeListener{_, isChecked->
@@ -322,7 +287,6 @@ class PokemonDetailFragment : Fragment() {
                 stats.isChecked = false
                 moves.isChecked = false
                 evo.isClickable = false
-
                 evoContent.visibility = View.VISIBLE
             }
 
@@ -330,7 +294,6 @@ class PokemonDetailFragment : Fragment() {
                 evo.isClickable = true
                 evoContent.visibility = View.GONE
             }
-
         }
         return
     }
@@ -338,17 +301,19 @@ class PokemonDetailFragment : Fragment() {
 
     private fun populateAboutSection(view: View) {
 
-        val aboutContent:LinearLayout = view.findViewById(R.id.about_container)
         val descriptionView:TextView = view.findViewById(R.id.description_content)
         val egg1: Button = view.findViewById(R.id.egg_group_1)
         val egg2: Button = view.findViewById(R.id.egg_group_2)
+        val heightContent:TextView = view.findViewById(R.id.height_content)
+        val weightContent:TextView = view.findViewById(R.id.weight_content)
+        val habitatContent:TextView = view.findViewById(R.id.habitat_content)
+        val growthContent:TextView = view.findViewById(R.id.growth_content)
+
 
         //set the description content
         descriptionView.text = this.description
 
-        //set the egg group section
-        // set the
-
+        //set the egg group sections
         egg1.text = eggGroup[0].capitalize()
         setEggGroupColor(eggGroup[0].toLowerCase(), egg1)
 
@@ -359,56 +324,115 @@ class PokemonDetailFragment : Fragment() {
             egg2.text = eggGroup[1].capitalize()
             setEggGroupColor(eggGroup[1].toLowerCase(), egg2)
         }
+
+        //set the height section
+        heightContent.text = this.height
+
+        //set the weight section
+        weightContent.text = this.weight
+
+        //set the habitat section
+        habitatContent.text = this.habitat.capitalize()
+
+        //set the growth rate section
+        growthContent.text = this.growthRate.capitalize()
+
+        return
+    }
+
+    private fun populateStatsSection(view: View) {
+        val hpBar: Button = view.findViewById(R.id.hp_bar)
+        val atkBar: Button = view.findViewById(R.id.atk_bar)
+        val defBar: Button = view.findViewById(R.id.def_bar)
+        val spAtkBar: Button = view.findViewById(R.id.sp_atk_bar)
+        val spDefBar: Button = view.findViewById(R.id.sp_def_bar)
+        val spdBar: Button = view.findViewById(R.id.spd_bar)
+        val scale:Float = requireContext().resources.displayMetrics.density
+
+        val maxBar:Int = 220
+
+        //setup the hp bar
+        var hpSize:Int = (maxBar * (this.hp*0.01)).roundToInt()
+        hpBar.text = this.hp.toString()
+        hpBar.layoutParams.width = (hpSize * scale + 0.5f).toInt();
+
+        //setup the atk bar
+        var atkSize:Int = (maxBar * (this.atk*0.01)).roundToInt()
+        atkBar.text = this.atk.toString()
+        atkBar.layoutParams.width = (atkSize * scale + 0.5f).toInt();
+
+        //setup the def bar
+        var defSize:Int = (maxBar * (this.def*0.01)).roundToInt()
+        defBar.text = this.def.toString()
+        defBar.layoutParams.width = (defSize * scale + 0.5f).toInt();
+
+        //setup the atk bar
+        var spAtkSize:Int = (maxBar * (this.sp_atk*0.01)).roundToInt()
+        spAtkBar.text = this.sp_atk.toString()
+        spAtkBar.layoutParams.width = (spAtkSize * scale + 0.5f).toInt();
+
+        //setup the def bar
+        var spDefSize:Int = (maxBar * (this.sp_def*0.01)).roundToInt()
+        spDefBar.text = this.sp_def.toString()
+        spDefBar.layoutParams.width = (spDefSize * scale + 0.5f).toInt();
+
+        //setup the def bar
+        var spdSize:Int = (maxBar * (this.spd*0.01)).roundToInt()
+        spdBar.text = this.spd.toString()
+        spdBar.layoutParams.width = (spdSize * scale + 0.5f).toInt()
+
         return
     }
 
     @SuppressLint("ResourceAsColor")
     private fun setEggGroupColor(egg_group:String, btn:Button) {
 
-        if(egg_group == "monster") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_monster)
-        }
-        else if(egg_group =="water1") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_water1)
-        }
-        else if(egg_group =="bug") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_bug)
-        }
-        else if(egg_group =="flying") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_flying)
-        }
-        else if(egg_group =="ground") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_mineral)
-        }
-        else if(egg_group =="fairy") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_fairy)
-        }
-        else if(egg_group =="plant") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_grass)
-        }
-        else if(egg_group =="humanshape") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_human)
-        }
-        else if(egg_group =="water3") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_water3)
-        }
-        else if(egg_group == "mineral") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_mineral)
-        }
-        else if(egg_group == "indeterminate") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_gender_unknown)
-        }
-        else if(egg_group == "water2") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_water2)
-        }
-        else if(egg_group == "ditto") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_ditto)
-        }
-        else if(egg_group == "dragon") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_dragon)
-        }
-        else if(egg_group == "no-eggs") {
-            btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_no_eggs_discovered)
+        when (egg_group) {
+            "monster" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_monster)
+            }
+            "water1" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_water1)
+            }
+            "bug" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_bug)
+            }
+            "flying" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_flying)
+            }
+            "ground" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_mineral)
+            }
+            "fairy" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_fairy)
+            }
+            "plant" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_grass)
+            }
+            "humanshape" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_human)
+            }
+            "water3" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_water3)
+            }
+            "mineral" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_mineral)
+            }
+            "indeterminate" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_gender_unknown)
+            }
+            "water2" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_water2)
+            }
+            "ditto" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_ditto)
+            }
+            "dragon" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_dragon)
+            }
+            "no-eggs" -> {
+                btn.backgroundTintList = ContextCompat.getColorStateList(requireContext(),R.color.egg_no_eggs_discovered)
+            }
         }
         return
     }
@@ -417,7 +441,13 @@ class PokemonDetailFragment : Fragment() {
 
         val portrait:LinearLayout = view.findViewById(R.id.portrait_container)
 
-        //save old action bar color
+        // stat "bars"
+        val hpBar: Button = view.findViewById(R.id.hp_bar)
+        val atkBar: Button = view.findViewById(R.id.atk_bar)
+        val defBar: Button = view.findViewById(R.id.def_bar)
+        val spAtkBar: Button = view.findViewById(R.id.sp_atk_bar)
+        val spDefBar: Button = view.findViewById(R.id.sp_def_bar)
+        val spdBar: Button = view.findViewById(R.id.spd_bar)
 
         //set the action bar color to the primary color
         (activity as MainActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(this.primaryColor))
@@ -433,11 +463,14 @@ class PokemonDetailFragment : Fragment() {
         //set the status bar color
         window.statusBarColor = this.primaryColor
 
-        //set the button accent colors
-//        view.findViewById<ToggleButton>(R.id.about_button).setBackgroundColor(this.primaryColor)
-//        view.findViewById<ToggleButton>(R.id.stats_button).setBackgroundColor(this.primaryColor)
-//        view.findViewById<ToggleButton>(R.id.moves_button).setBackgroundColor(this.primaryColor)
-//        view.findViewById<ToggleButton>(R.id.evolutions_button).setBackgroundColor(this.primaryColor)
+        //set stat bar colors
+        hpBar.background.setTint(this.primaryColor)
+        atkBar.background.setTint(this.primaryColor)
+        defBar.background.setTint(this.primaryColor)
+        spAtkBar.background.setTint(this.primaryColor)
+        spDefBar.background.setTint(this.primaryColor)
+        spdBar.background.setTint(this.primaryColor)
+
         return
     }
 
@@ -512,6 +545,30 @@ class PokemonDetailFragment : Fragment() {
             }
         }
 
+    }
+
+    // populates gets the data required for the stats page
+    private fun retrievePokemonStats() {
+
+        // get the hp stat
+        this.hp = pokemon!!.stats[0].baseStat
+
+        // get the attack stat
+        this.atk = pokemon!!.stats[1].baseStat
+
+        // get the defense stat
+        this.def = pokemon!!.stats[2].baseStat
+
+        // get the sp attack stat
+        this.sp_atk = pokemon!!.stats[3].baseStat
+
+        // get the sp def stat
+        this.sp_def = pokemon!!.stats[4].baseStat
+
+        // get the speed stat
+        this.spd = pokemon!!.stats[5].baseStat
+
+        return
     }
 
     override fun onDestroyView() {
