@@ -117,10 +117,8 @@ class PokemonDetailFragment : Fragment() {
             weight = "$weightNum kg"
             height = "$heightNum m"
 
-
             //get the data for the stats screen
             retrievePokemonStats()
-
         }
     }
 
@@ -174,8 +172,6 @@ class PokemonDetailFragment : Fragment() {
                 }
             }
     }
-
-
 
     private fun initView(view: View) {
         //save the elevation
@@ -298,7 +294,6 @@ class PokemonDetailFragment : Fragment() {
         return
     }
 
-
     private fun populateAboutSection(view: View) {
 
         val descriptionView:TextView = view.findViewById(R.id.description_content)
@@ -350,34 +345,71 @@ class PokemonDetailFragment : Fragment() {
         val scale:Float = requireContext().resources.displayMetrics.density
 
         val maxBar:Int = 220
+        val minBar:Int = 55
 
         //setup the hp bar
         var hpSize:Int = (maxBar * (this.hp*0.01)).roundToInt()
+        if(hpSize > maxBar) {
+            hpSize = maxBar
+        }
+        else if (hpSize < minBar) {
+            hpSize = minBar
+        }
         hpBar.text = this.hp.toString()
         hpBar.layoutParams.width = (hpSize * scale + 0.5f).toInt();
 
         //setup the atk bar
         var atkSize:Int = (maxBar * (this.atk*0.01)).roundToInt()
+        if(atkSize > maxBar) {
+            atkSize = maxBar
+        }
+        else if (atkSize < minBar) {
+            atkSize = minBar
+        }
         atkBar.text = this.atk.toString()
         atkBar.layoutParams.width = (atkSize * scale + 0.5f).toInt();
 
         //setup the def bar
         var defSize:Int = (maxBar * (this.def*0.01)).roundToInt()
+        if(defSize > maxBar) {
+            defSize = maxBar
+        }
+        else if (defSize < minBar) {
+            defSize = minBar
+        }
         defBar.text = this.def.toString()
         defBar.layoutParams.width = (defSize * scale + 0.5f).toInt();
 
         //setup the atk bar
         var spAtkSize:Int = (maxBar * (this.sp_atk*0.01)).roundToInt()
+        if(spAtkSize > maxBar) {
+            spAtkSize = maxBar
+        }
+        else if (spAtkSize < minBar) {
+            spAtkSize = minBar
+        }
         spAtkBar.text = this.sp_atk.toString()
         spAtkBar.layoutParams.width = (spAtkSize * scale + 0.5f).toInt();
 
         //setup the def bar
         var spDefSize:Int = (maxBar * (this.sp_def*0.01)).roundToInt()
+        if(spDefSize > maxBar) {
+            spDefSize = maxBar
+        }
+        else if (spDefSize < minBar) {
+            spDefSize = minBar
+        }
         spDefBar.text = this.sp_def.toString()
         spDefBar.layoutParams.width = (spDefSize * scale + 0.5f).toInt();
 
         //setup the def bar
         var spdSize:Int = (maxBar * (this.spd*0.01)).roundToInt()
+        if(spdSize > maxBar) {
+            spdSize = maxBar
+        }
+        else if (spdSize < minBar) {
+            spdSize = minBar
+        }
         spdBar.text = this.spd.toString()
         spdBar.layoutParams.width = (spdSize * scale + 0.5f).toInt()
 
@@ -455,9 +487,8 @@ class PokemonDetailFragment : Fragment() {
         //set the portrait background
         portrait.setBackgroundColor(this.primaryColor)
 
-        val window:Window = requireActivity().window
-
         //save the status bar color
+        val window:Window = requireActivity().window
         this.statusBarColorOriginal = window.statusBarColor
 
         //set the status bar color
@@ -583,9 +614,7 @@ class PokemonDetailFragment : Fragment() {
 
         //change the status bar back to normal
         requireActivity().window.statusBarColor = this.statusBarColorOriginal
-
     }
-
 }
 
 
