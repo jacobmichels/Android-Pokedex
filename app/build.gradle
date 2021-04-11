@@ -46,7 +46,9 @@ repositories {
 }
 
 dependencies {
+    //used for the pokemon detail view
     implementation 'me.sargunvohra.lib:pokekotlin:2.4.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

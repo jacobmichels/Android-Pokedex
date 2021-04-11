@@ -4,19 +4,20 @@ import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
+import android.text.Layout
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.ToggleButton
+import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.cis4030.pokedex.MainActivity
@@ -24,14 +25,21 @@ import com.cis4030.pokedex.R
 import com.cis4030.pokedex.database.PokemonDatabase
 import com.cis4030.pokedex.database.getDatabase
 import com.cis4030.pokedex.repository.PokedexRepository
+import com.squareup.picasso.Picasso
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient
-import me.sargunvohra.lib.pokekotlin.model.Pokedex
-import me.sargunvohra.lib.pokekotlin.model.Pokemon
-import me.sargunvohra.lib.pokekotlin.model.PokemonSpecies
+import me.sargunvohra.lib.pokekotlin.model.*
 
 import kotlin.math.round
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
+
+import kotlinx.coroutines.*
+import java.io.InterruptedIOException
+import java.lang.Exception
+import java.lang.Runnable
+import java.lang.Thread
+import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.concurrent.thread
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -56,7 +64,6 @@ class PokemonDetailFragment : Fragment() {
     private var pokemon:Pokemon? = null
 
 
-
     private lateinit var name:String
     private var type:ArrayList<String> = arrayListOf()
 
@@ -69,6 +76,9 @@ class PokemonDetailFragment : Fragment() {
     private var heightNum:Float = 0.0f
     private var weightNum:Float = 0.0f
 
+    // 0 = move name  1 = move description  2 = damage type
+    private var moves:ArrayList<ArrayList<String>> = arrayListOf()
+
     //pokemon stats
     private var hp:Int = 0
     private var atk:Int = 0
@@ -76,6 +86,17 @@ class PokemonDetailFragment : Fragment() {
     private var sp_atk:Int = 0
     private var sp_def:Int = 0
     private var spd:Int = 0
+
+    private var movesLoaded:Boolean = false
+
+    // 0 = evolution  1 = min level
+    private var evolutions:ArrayList<ArrayList<String>> = arrayListOf()
+
+    private lateinit var pokeApi:PokeApiClient
+
+    private var myThread:Thread? = null
+
+    private lateinit var currentView:View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,10 +110,9 @@ class PokemonDetailFragment : Fragment() {
                 .permitAll().build()
             StrictMode.setThreadPolicy(policy)
 
-            val pokeApi = PokeApiClient()
+            this.pokeApi = PokeApiClient()
             pokemonSpecies = pokeApi.getPokemonSpecies(pokemonID)
             pokemon = pokeApi.getPokemon(pokemonID)
-
 
             // need to know what generations the pokemon is in, 10 is FireRed description but it wont work for all of them.
             name = pokemonSpecies!!.name
@@ -119,6 +139,15 @@ class PokemonDetailFragment : Fragment() {
 
             //get the data for the stats screen
             retrievePokemonStats()
+
+            //get the move list for the pokemon
+//            retrieveMoveList()
+
+            //get the evolution data, (levels req and evolution stages)
+            getEvolutionChain()
+
+
+            //https://pokeres.bastionbot.org/images/pokemon/1.png example
         }
     }
 
@@ -134,8 +163,13 @@ class PokemonDetailFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
+        currentView = view
+
         //set the title on teh action bar
         (activity as MainActivity).supportActionBar?.title = this.name.capitalize()
+
+        //set the pokemon portrait
+        setPortrait(pokemonID, view)
 
         determinePrimaryColor()
 
@@ -147,11 +181,27 @@ class PokemonDetailFragment : Fragment() {
 
         populateStatsSection(view)
 
-        // populate the moves section
+        myThread = MovesThread()
+        myThread!!.start()
 
         // populate the evolutions section
         initView(view)
     }
+
+    inner class MovesThread(): Thread() {
+
+        override fun run() {
+            try {
+                populateMovesSection()
+            } catch(e:InterruptedException) {
+                Log.d("MovesThread()", e.toString())
+
+            } catch (eio:InterruptedIOException) {
+                Log.d("MovesThread()", eio.toString())
+            }
+        }
+    }
+
 
     companion object {
         /**
@@ -262,6 +312,12 @@ class PokemonDetailFragment : Fragment() {
         moves.setOnCheckedChangeListener{_, isChecked->
 
             if(isChecked) {
+                if(!movesLoaded) {
+
+                    movesLoaded= true
+                }
+
+
                 about.isChecked = false
                 stats.isChecked = false
                 evo.isChecked = false
@@ -293,6 +349,8 @@ class PokemonDetailFragment : Fragment() {
         }
         return
     }
+
+
 
     private fun populateAboutSection(view: View) {
 
@@ -412,8 +470,6 @@ class PokemonDetailFragment : Fragment() {
         }
         spdBar.text = this.spd.toString()
         spdBar.layoutParams.width = (spdSize * scale + 0.5f).toInt()
-
-        return
     }
 
     @SuppressLint("ResourceAsColor")
@@ -578,6 +634,76 @@ class PokemonDetailFragment : Fragment() {
 
     }
 
+    private fun setMoveDamageColor(btn:Button, type:String) {
+
+        when (type.toLowerCase()) {
+            "normal" -> {
+                btn.background.setTint(resources.getColor(R.color.normal, null))
+            }
+            "fighting" -> {
+                btn.background.setTint(resources.getColor(R.color.fighting, null))
+            }
+            "flying" -> {
+                btn.background.setTint(resources.getColor(R.color.flying, null))
+
+            }
+            "poison" -> {
+                btn.background.setTint(resources.getColor(R.color.poison, null))
+            }
+            "ground" -> {
+                btn.background.setTint(resources.getColor(R.color.ground, null))
+            }
+            "rock" -> {
+                btn.background.setTint(resources.getColor(R.color.rock, null))
+            }
+            "bug" -> {
+                btn.background.setTint(resources.getColor(R.color.bug, null))
+            }
+            "ghost" -> {
+                btn.background.setTint(resources.getColor(R.color.ghost, null))
+            }
+            "steel" -> {
+                btn.background.setTint(resources.getColor(R.color.steel, null))
+            }
+            "fire" -> {
+                btn.background.setTint(resources.getColor(R.color.fire, null))
+            }
+            "water" -> {
+                btn.background.setTint(resources.getColor(R.color.water, null))
+            }
+            "grass" -> {
+                btn.background.setTint(resources.getColor(R.color.grass, null))
+            }
+            "electric" -> {
+                btn.background.setTint(resources.getColor(R.color.electric, null))
+            }
+            "psychic" -> {
+                btn.background.setTint(resources.getColor(R.color.psychic, null))
+            }
+            "ice" -> {
+                btn.background.setTint(resources.getColor(R.color.ice, null))
+            }
+            "dragon" -> {
+                btn.background.setTint(resources.getColor(R.color.dragon, null))
+            }
+            "dark" -> {
+                btn.background.setTint(resources.getColor(R.color.dark, null))
+            }
+            "fairy" -> {
+                btn.background.setTint(resources.getColor(R.color.fairy, null))
+            }
+            "unknown" -> {
+                btn.background.setTint(resources.getColor(R.color.unknown, null))
+            }
+            "shadow" -> {
+                btn.background.setTint(resources.getColor(R.color.ghost, null))
+            }
+            else -> {
+                btn.background.setTint(resources.getColor(R.color.deep_red, null))
+            }
+        }
+    }
+
     // populates gets the data required for the stats page
     private fun retrievePokemonStats() {
 
@@ -602,18 +728,206 @@ class PokemonDetailFragment : Fragment() {
         return
     }
 
+    private fun retrieveMoveList() {
+        val moveList:List<PokemonMove> = pokemon!!.moves
+
+        for(move in moveList) {
+
+            //only add moves that are the same as this pokemon's type
+
+
+            var moveEntry:ArrayList<String> = arrayListOf()
+
+            //name the name first
+
+            var rawName = move.move.name.replace("-"," ")
+
+            //Capitalize every word
+            rawName = rawName.toLowerCase().split(" ").joinToString(" ") { it.capitalize() }
+
+            // get the move id num
+            var urlSplit:List<String> = move.move.url.split("/")
+            val moveNum:Int = urlSplit[6].toInt()
+            var theMove: Move = pokeApi.getMove(moveNum)
+            //for((counter, item) in urlSplit.withIndex()) {
+            //    println("$counter $item")
+            //}
+
+            //get the move description
+            var descriptionRaw:String = theMove.effectEntries[0].effect
+            descriptionRaw = descriptionRaw.replace("\$effect_chance%", "")
+            descriptionRaw = descriptionRaw.replace("  ", " ")
+
+            if((theMove.type.name !in type)) {
+                continue
+            }
+
+
+            moveEntry.add(rawName)
+            moveEntry.add(descriptionRaw)
+            moveEntry.add(theMove.type.name)
+            this.moves.add(moveEntry)
+        }
+    }
+
     override fun onDestroyView() {
 
         super.onDestroyView()
 
         // change the title bar color back to its original red
-        (activity as MainActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.deep_red,null)))
+        (activity as MainActivity).supportActionBar?.setBackgroundDrawable(
+            ColorDrawable(
+                resources.getColor(
+                    R.color.deep_red,
+                    null
+                )
+            )
+        )
 
         //reset the elevation
         (activity as MainActivity).supportActionBar?.elevation = this.elevation!!
 
         //change the status bar back to normal
         requireActivity().window.statusBarColor = this.statusBarColorOriginal
+
+        // kill the moves thread
+        myThread?.interrupt()
+
+    }
+
+    //co routine bc its so slow
+    private fun populateMovesSection() {
+
+        retrieveMoveList()
+
+        val view:View = this.currentView
+
+
+        requireActivity().runOnUiThread(java.lang.Runnable {
+            val movesSection: LinearLayout = view.findViewById(R.id.moves_container)
+            val scale: Float = requireContext().resources.displayMetrics.density
+
+            for (move in this.moves) {
+
+                //create the sub container for the move title, button, and description
+                val oneMove = LinearLayout(activity)
+                val oneMoveId: Int = View.generateViewId()
+                oneMove.id = oneMoveId
+                movesSection.addView(oneMove)
+                val subContainer: LinearLayout = view.findViewById<LinearLayout>(oneMoveId)
+                subContainer.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+                subContainer.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                subContainer.setPadding(0, (40 * scale + 0.5f).toInt(), 0, 0)
+                subContainer.orientation = LinearLayout.VERTICAL
+
+                //create the title and button container
+                val titleTypeContainer = LinearLayout(activity)
+                val titleTypeId: Int = View.generateViewId()
+                titleTypeContainer.id = titleTypeId
+                subContainer.addView(titleTypeContainer)
+                titleTypeContainer.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+                titleTypeContainer.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                titleTypeContainer.orientation = LinearLayout.HORIZONTAL
+
+                //create the title and add it to the titleType container
+                val moveName = TextView(activity)
+                val moveNameId: Int = View.generateViewId()
+                moveName.id = moveNameId
+                titleTypeContainer.addView(moveName)
+                val mName: TextView = view.findViewById(moveNameId)
+                mName.text = move[0]
+                mName.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+                mName.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                mName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+                mName.setTextColor(Color.BLACK)
+
+                // create the space item and add it to the
+                val moveSpace = Space(activity)
+                val moveSpaceId: Int = View.generateViewId()
+                moveSpace.id = moveSpaceId
+                titleTypeContainer.addView(moveSpace)
+                val space: Space = view.findViewById(moveSpaceId)
+                space.layoutParams.width = (20 * scale + 0.5f).toInt();
+                space.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+
+                // create the damage type graphic
+                val dmgType = Button(activity)
+                val dmgTypeId: Int = View.generateViewId()
+                dmgType.id = dmgTypeId
+                titleTypeContainer.addView(dmgType)
+                val dmg: Button = view.findViewById(dmgTypeId)
+
+
+                //change the corner radius
+                var gd: GradientDrawable = GradientDrawable()
+                gd.setColor(Color.BLUE)
+                gd.cornerRadius = (25 * scale + 0.5f);
+                dmg.background = (gd)
+
+                dmg.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+                dmg.layoutParams.height = (35 * scale + 0.5f).toInt();
+                dmg.text = move[2]
+                dmg.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
+                dmg.setTextColor(Color.WHITE)
+                dmg.minHeight = 0
+                dmg.minWidth = 0
+                dmg.letterSpacing = 0F
+                dmg.setPadding(0)
+                dmg.isClickable = false
+                dmg.textAlignment = ViewGroup.TEXT_ALIGNMENT_CENTER
+                setMoveDamageColor(dmg, move[2])
+
+                //Add the description
+                val moveDescription = TextView(activity)
+                val moveDescriptionId = View.generateViewId()
+                moveDescription.id = moveDescriptionId
+                subContainer.addView(moveDescription)
+
+                val desc: TextView = view.findViewById(moveDescriptionId)
+                desc.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+                desc.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                desc.text = move[1]
+            }
+        })
+    }
+
+    private fun setPortrait(id:Int, view:View) {
+        val portrait = view.findViewById<ImageView>(R.id.pokemon_portrait)
+
+
+//        portrait.setBa
+        Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/$id.png").into(portrait)
+
+        //https://pokeres.bastionbot.org/images/pokemon/1.png example
+    }
+
+    private fun getEvolutionChain() {
+
+        var urlSplit:List<String> = pokemonSpecies!!.evolutionChain.url.split("/")
+        val evoIndex:Int = urlSplit[6].toInt()
+        val evo:EvolutionChain =  pokeApi.getEvolutionChain(evoIndex)
+        var current:ChainLink = evo.chain
+
+        //set the first array
+        evolutions.add(arrayListOf())
+        evolutions[0].add(current.species.name)
+        evolutions[0].add("0")
+
+        var i:Int = 1
+        while(current.evolvesTo.isNotEmpty()) {
+            current = current.evolvesTo[0]
+            evolutions.add(arrayListOf())
+            evolutions[i].add(current.species.name)
+            evolutions[i].add(current.evolutionDetails[0].minLevel.toString())
+            i++
+        }
+
+        //check if data is correct
+        for(item in evolutions) {
+            for(str in item) {
+                Log.d("evolution",str)
+            }
+        }
     }
 }
 
