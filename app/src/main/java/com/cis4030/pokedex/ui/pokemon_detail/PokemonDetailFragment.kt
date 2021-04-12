@@ -1,6 +1,7 @@
 package com.cis4030.pokedex.ui.pokemon_detail
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -11,10 +12,7 @@ import android.os.StrictMode
 import android.text.Layout
 import android.util.Log
 import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
@@ -89,12 +87,16 @@ class PokemonDetailFragment : Fragment() {
 
     private var movesLoaded:Boolean = false
 
-    // 0 = evolution  1 = min level
+    // 0 = evolution name 1 = pokemon id  2 = min level
     private var evolutions:ArrayList<ArrayList<String>> = arrayListOf()
 
     private lateinit var pokeApi:PokeApiClient
 
+    private var aboutThread:Thread? = null
+
     private var myThread:Thread? = null
+
+    private var statsThread:Thread? = null
 
     private lateinit var currentView:View
 
@@ -114,38 +116,22 @@ class PokemonDetailFragment : Fragment() {
             pokemonSpecies = pokeApi.getPokemonSpecies(pokemonID)
             pokemon = pokeApi.getPokemon(pokemonID)
 
-            // need to know what generations the pokemon is in, 10 is FireRed description but it wont work for all of them.
             name = pokemonSpecies!!.name
 
             for(pokemonType in pokemon!!.types) {
                 type.add(pokemonType.type.name)
             }
 
-            description = pokemonSpecies!!.flavorTextEntries[10].flavorText
-            description = description.replace("  ", "")
 
-            growthRate = pokemonSpecies!!.growthRate.name
-            habitat = pokemonSpecies!!.habitat!!.name
-
-
-            for(element in pokemonSpecies!!.eggGroups) {
-                eggGroup.add(element.name)
-            }
-            heightNum = (pokemon!!.height * 0.1f)
-            weightNum = (pokemon!!.weight * 0.1f)
-
-            weight = "$weightNum kg"
-            height = "$heightNum m"
 
             //get the data for the stats screen
-            retrievePokemonStats()
+//            retrievePokemonStats()
 
             //get the move list for the pokemon
 //            retrieveMoveList()
 
             //get the evolution data, (levels req and evolution stages)
-            getEvolutionChain()
-
+//            getEvolutionChain()
 
             //https://pokeres.bastionbot.org/images/pokemon/1.png example
         }
@@ -163,7 +149,7 @@ class PokemonDetailFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
-        currentView = view
+        this.currentView = view
 
         //set the title on teh action bar
         (activity as MainActivity).supportActionBar?.title = this.name.capitalize()
@@ -177,15 +163,76 @@ class PokemonDetailFragment : Fragment() {
 
         setButtonListeners(view)
 
-        populateAboutSection(view)
+        aboutThread = AboutThread()
+        aboutThread!!.start()
 
-        populateStatsSection(view)
+        statsThread = StatsThread()
+        statsThread!!.start()
 
         myThread = MovesThread()
         myThread!!.start()
 
         // populate the evolutions section
+        populateEvolutionSection()
+
+
         initView(view)
+    }
+
+    private fun getAboutSectionData() {
+        // need to know what generations the pokemon is in, 10 is FireRed description but it wont work for all of them.
+        description = pokemonSpecies!!.flavorTextEntries[10].flavorText
+        description = description.replace("  ", "")
+
+        growthRate = pokemonSpecies!!.growthRate.name
+        habitat = pokemonSpecies!!.habitat!!.name
+
+        for(element in pokemonSpecies!!.eggGroups) {
+            eggGroup.add(element.name)
+        }
+        heightNum = (pokemon!!.height * 0.1f)
+        weightNum = (pokemon!!.weight * 0.1f)
+
+        weight = "$weightNum kg"
+        height = "$heightNum m"
+    }
+    inner class AboutThread(): Thread() {
+        override fun run() {
+            try {
+
+                getAboutSectionData()
+
+                requireActivity().runOnUiThread(java.lang.Runnable {
+                    populateAboutSection()
+                })
+
+            } catch(e:InterruptedException) {
+                Log.d("AboutThread()", e.toString())
+
+            } catch (eio:InterruptedIOException) {
+                Log.d("AboutThread()", eio.toString())
+            }
+        }
+    }
+
+    inner class StatsThread(): Thread(){
+
+        override fun run() {
+            try {
+
+                retrievePokemonStats()
+
+                requireActivity().runOnUiThread(java.lang.Runnable {
+                    populateStatsSection()
+                })
+
+            } catch(e:InterruptedException) {
+                Log.d("StatsThread()", e.toString())
+
+            } catch (eio:InterruptedIOException) {
+                Log.d("StatsThread()", eio.toString())
+            }
+        }
     }
 
     inner class MovesThread(): Thread() {
@@ -201,6 +248,8 @@ class PokemonDetailFragment : Fragment() {
             }
         }
     }
+
+
 
 
     companion object {
@@ -352,8 +401,9 @@ class PokemonDetailFragment : Fragment() {
 
 
 
-    private fun populateAboutSection(view: View) {
+    private fun populateAboutSection() {
 
+        val view:View = this.currentView
         val descriptionView:TextView = view.findViewById(R.id.description_content)
         val egg1: Button = view.findViewById(R.id.egg_group_1)
         val egg2: Button = view.findViewById(R.id.egg_group_2)
@@ -393,7 +443,10 @@ class PokemonDetailFragment : Fragment() {
         return
     }
 
-    private fun populateStatsSection(view: View) {
+    private fun populateStatsSection() {
+
+        val view = this.currentView
+
         val hpBar: Button = view.findViewById(R.id.hp_bar)
         val atkBar: Button = view.findViewById(R.id.atk_bar)
         val defBar: Button = view.findViewById(R.id.def_bar)
@@ -790,7 +843,9 @@ class PokemonDetailFragment : Fragment() {
         //change the status bar back to normal
         requireActivity().window.statusBarColor = this.statusBarColorOriginal
 
-        // kill the moves thread
+        // kill the threads
+        aboutThread?.interrupt()
+        statsThread?.interrupt()
         myThread?.interrupt()
 
     }
@@ -911,23 +966,160 @@ class PokemonDetailFragment : Fragment() {
         //set the first array
         evolutions.add(arrayListOf())
         evolutions[0].add(current.species.name)
+        var pkmnUrl:List<String> = current.species.url.split("/")
+        evolutions[0].add(pkmnUrl[6]) // get the pokemon id
         evolutions[0].add("0")
 
         var i:Int = 1
         while(current.evolvesTo.isNotEmpty()) {
             current = current.evolvesTo[0]
             evolutions.add(arrayListOf())
-            evolutions[i].add(current.species.name)
-            evolutions[i].add(current.evolutionDetails[0].minLevel.toString())
+            evolutions[i].add(current.species.name) // get the name
+            var speciesUrl:List<String> = current.species.url.split("/")
+            evolutions[i].add(speciesUrl[6]) // get the pokemon id
+
+            var minLevel:String = current.evolutionDetails[0].minLevel.toString()
+            if(minLevel == "null") {
+                minLevel = "0"
+            }
+            evolutions[i].add(minLevel)
             i++
         }
 
-        //check if data is correct
+//        check if data is correct
         for(item in evolutions) {
             for(str in item) {
                 Log.d("evolution",str)
             }
         }
+    }
+
+    private fun populateEvolutionSection() {
+        getEvolutionChain()
+
+
+        val view:View = this.currentView
+        //threading...
+        //requireActivity().runOnUiThread(java.lang.Runnable {
+
+        val evoSection: LinearLayout = view.findViewById(R.id.evolution_container)
+        val scale: Float = requireContext().resources.displayMetrics.density
+        val pokemonWidth:Int = 500
+
+        Log.d("evolution","starting")
+
+        var notFirst:Boolean = false
+        for (evolution in this.evolutions) {
+
+
+            if (notFirst) {
+
+                //add small space
+                var titleSpace = Space(activity)
+                val titleSpID = View.generateViewId()
+                titleSpace.id = titleSpID
+                evoSection.addView(titleSpace)
+                titleSpace = view.findViewById(titleSpID)
+                titleSpace.layoutParams.height = (20 * scale + 0.5f).toInt()
+                titleSpace.layoutParams.width = (20 * scale + 0.5f).toInt()
+
+
+                var levelReq = LinearLayout (activity)
+                val levelReqId = View.generateViewId()
+                levelReq.id = levelReqId
+                evoSection.addView(levelReq)
+                levelReq = view.findViewById(levelReqId)
+                levelReq.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                levelReq.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+                levelReq.gravity = Gravity.CENTER_HORIZONTAL
+                levelReq.orientation = LinearLayout.VERTICAL
+
+                val minLvl:String = evolution[2]
+                if (minLvl != "0") {
+                    var minLevel = TextView(activity)
+                    val minLvlId:Int = View.generateViewId()
+                    minLevel.id = minLvlId
+                    levelReq.addView(minLevel)
+                    minLevel = view.findViewById(minLvlId)
+                    val minimum:String = evolution[2]
+                    minLevel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25F)
+                    minLevel.setTextColor(Color.DKGRAY)
+                    minLevel.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                    minLevel.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+                    minLevel.text = "Minimum Level: $minimum"
+                    minLevel.gravity = Gravity.CENTER_HORIZONTAL
+                }
+
+                var downArrow = ImageView(activity)
+                val arrowId = View.generateViewId()
+                downArrow.id = arrowId
+                levelReq.addView(downArrow)
+                downArrow = view.findViewById(arrowId)
+
+                Picasso.get().load(R.drawable.down_arrow).into(downArrow)
+
+                downArrow.layoutParams.height = (100 * scale + 0.5f).toInt()
+                downArrow.layoutParams.width = (200 * scale + 0.5f).toInt()
+                downArrow.setColorFilter(Color.DKGRAY)
+            }
+            notFirst = true
+
+
+            //add a space here
+            var formatSpace = Space(activity)
+            val formatID = View.generateViewId()
+            formatSpace.id = formatID
+            evoSection.addView(formatSpace)
+            formatSpace = view.findViewById(formatID)
+            formatSpace.layoutParams.height = (20 * scale + 0.5f).toInt()
+            formatSpace.layoutParams.width = (20 * scale + 0.5f).toInt()
+
+
+            var oneEvolution = LinearLayout(activity)
+            val oneEvoId:Int = View.generateViewId()
+            oneEvolution.id = oneEvoId
+            evoSection.addView(oneEvolution)
+
+            oneEvolution = view.findViewById(oneEvoId)
+            oneEvolution.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            oneEvolution.layoutParams.width = (300 * scale + 0.5f).toInt();
+            oneEvolution.orientation = LinearLayout.VERTICAL
+
+            var gd: GradientDrawable = GradientDrawable()
+            gd.setColor(this.primaryColor)
+            gd.cornerRadius = (30 * scale + 0.5f);
+            oneEvolution.background = gd
+            oneEvolution.gravity = Gravity.CENTER_HORIZONTAL
+
+            //add the name tag
+            var evoName = TextView(activity)
+            val evoId:Int = View.generateViewId()
+            evoName.id = evoId
+            oneEvolution.addView(evoName)
+            evoName = view.findViewById(evoId)
+
+            evoName.text = evolution[0]
+            evoName.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+            evoName.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            evoName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+            evoName.setTextColor(Color.WHITE)
+
+            // add the picture
+            var portrait = ImageView(activity)
+            val portraitId:Int = View.generateViewId()
+            portrait.id = portraitId
+            oneEvolution.addView(portrait)
+            portrait = view.findViewById(portraitId)
+
+            val pkmID:String = evolution[1]
+            Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/$pkmID.png").into(portrait)
+            portrait.layoutParams.width  = (200 * scale + 0.5f).toInt();
+            portrait.layoutParams.height  = (200 * scale + 0.5f).toInt();
+
+            Log.d("evolution","completed one of them")
+        }
+
+        Log.d("evolution","completed all")
     }
 }
 
