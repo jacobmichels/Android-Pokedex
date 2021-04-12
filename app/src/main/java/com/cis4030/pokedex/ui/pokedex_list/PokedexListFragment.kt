@@ -1,5 +1,8 @@
 package com.cis4030.pokedex.ui.pokedex_list
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -17,6 +20,8 @@ import com.cis4030.pokedex.viewmodels.SharedViewModel
 class PokedexListFragment : Fragment() {
 
     private val viewModel: SharedViewModel by activityViewModels()
+
+    private var toast:Toast? = null
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -92,6 +97,59 @@ class PokedexListFragment : Fragment() {
     // goto the detail view from this view.
     private fun displayPokemonDetails(pokemon: DatabasePokemon, view:View) {
         Log.d("detail", "Pokemon clicked " + pokemon.name)
-        view.findNavController().navigate(PokedexListFragmentDirections.actionPokedexHomeToPokemonDetailFragment(pokemon.id))
+
+
+        this.toast?.cancel()
+
+
+        val msg:String = "Sorry, a working internet connection is required to view the Pokemon details."
+        toast = Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT)
+
+
+        //first check if connected to internet
+        if(connectedInternet() and hasInternetActivity() ) {
+            view.findNavController().navigate(PokedexListFragmentDirections.actionPokedexHomeToPokemonDetailFragment(pokemon.id))
+            this.toast?.cancel()
+        }
+        else {
+            //make a toast message here
+            Log.d("internet","No internet!!")
+            toast?.show()
+        }
+    }
+
+    private fun connectedInternet():Boolean {
+        val connectMngr = requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if(connectMngr != null) {
+            val capable = connectMngr.getNetworkCapabilities(connectMngr.activeNetwork)
+
+            if(capable != null) {
+                when {
+                    capable.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                        return true
+                    }
+                    capable.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+                        return true
+                    }
+                    capable.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+
+    private fun hasInternetActivity():Boolean {
+        var result:Boolean = false
+        try {
+            var cmd:String = "ping -c 1 google.ca"
+            result = Runtime.getRuntime().exec(cmd).waitFor()==0
+        } catch (e:Exception) {
+            Log.d("internet", e.toString())
+        }
+
+        return result
     }
 }

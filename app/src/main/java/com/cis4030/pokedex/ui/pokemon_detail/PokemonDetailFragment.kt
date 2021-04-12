@@ -113,8 +113,9 @@ class PokemonDetailFragment : Fragment() {
             StrictMode.setThreadPolicy(policy)
 
             this.pokeApi = PokeApiClient()
-            pokemonSpecies = pokeApi.getPokemonSpecies(pokemonID)
-            pokemon = pokeApi.getPokemon(pokemonID)
+            this.pokemonSpecies = pokeApi.getPokemonSpecies(pokemonID)
+            this.pokemon = pokeApi.getPokemon(pokemonID)
+
 
             name = pokemonSpecies!!.name
 
