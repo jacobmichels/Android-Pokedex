@@ -7,6 +7,24 @@
         <variable
             name="team"
             type="com.cis4030.pokedex.database.DatabaseTeam" />
+        <variable
+            name="dbpokemon1"
+            type="com.cis4030.pokedex.database.DatabasePokemon" />
+        <variable
+            name="dbpokemon2"
+            type="com.cis4030.pokedex.database.DatabasePokemon" />
+        <variable
+            name="dbpokemon3"
+            type="com.cis4030.pokedex.database.DatabasePokemon" />
+        <variable
+            name="dbpokemon4"
+            type="com.cis4030.pokedex.database.DatabasePokemon" />
+        <variable
+            name="dbpokemon5"
+            type="com.cis4030.pokedex.database.DatabasePokemon" />
+        <variable
+            name="dbpokemon6"
+            type="com.cis4030.pokedex.database.DatabasePokemon" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +35,7 @@
             android:id="@+id/team_name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="97dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="24dp"
             android:text="@{team.name}"
             android:textSize="20dp"
@@ -26,12 +44,12 @@
 
         <TextView
             android:id="@+id/team_power_text"
-            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="115dp"
-            android:text="Power"
+            android:layout_marginEnd="48dp"
+            android:text="@{@string/power_text(team.power)}"
+            android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,8 +59,7 @@
             android:layout_height="110dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="64dp"
-            android:layout_marginEnd="3dp"
-            app:layout_constraintEnd_toStartOf="@+id/empty_team_text"
+            app:imageUrl="@{dbpokemon1.imageUrl}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@mipmap/ic_bulbasaur_foreground" />
@@ -52,6 +69,7 @@
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_marginTop="64dp"
+            app:imageUrl="@{dbpokemon2.imageUrl}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,11 +80,10 @@
             android:id="@+id/pokemon_3"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:layout_marginStart="3dp"
             android:layout_marginTop="64dp"
             android:layout_marginEnd="16dp"
+            app:imageUrl="@{dbpokemon3.imageUrl}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/empty_team_text"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@mipmap/ic_bulbasaur_foreground" />
 
@@ -77,6 +94,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
+            app:imageUrl="@{dbpokemon4.imageUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/pokemon_5"
             app:layout_constraintStart_toStartOf="parent"
@@ -88,6 +106,7 @@
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_marginTop="16dp"
+            app:imageUrl="@{dbpokemon5.imageUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -102,6 +121,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            app:imageUrl="@{dbpokemon6.imageUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/pokemon_5"

@@ -29,7 +29,13 @@
         >
         <action
             android:id="@+id/action_team_viewer_to_teamViewFragment"
-            app:destination="@id/teamViewFragment" />
+            app:destination="@id/teamViewFragment">
+            <argument
+                android:name="teamname"
+                app:argType="string"
+                android:defaultValue=""
+                />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/createPokemonFragment"
@@ -40,5 +46,25 @@
         android:id="@+id/teamViewFragment"
         android:name="com.cis4030.pokedex.ui.team.TeamViewFragment"
         android:label="TeamViewFragment"
-        tools:layout="@layout/fragment_team_view"/>
+        tools:layout="@layout/fragment_team_view">
+        <action
+            android:id="@+id/action_teamViewFragment_to_selectPokemonFragment"
+            app:destination="@id/selectPokemonFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectPokemonFragment"
+        android:name="com.cis4030.pokedex.ui.pokemon_select.SelectPokemonFragment"
+        android:label="SelectPokemonFragment"
+        tools:layout="@layout/fragment_list_select">
+        <action
+            android:id="@+id/action_selectPokemonFragment_to_teamViewFragment"
+            app:destination="@id/teamViewFragment"
+            app:popUpTo="@id/teamViewFragment"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="pokemon"
+                android:defaultValue=""
+                app:argType="string" />
+        </action>
+    </fragment>
 </navigation>

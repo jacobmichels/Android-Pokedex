@@ -10,12 +10,10 @@ import com.cis4030.pokedex.R
 import com.cis4030.pokedex.databinding.FragmentTeamListBinding
 import com.cis4030.pokedex.ui.pokedex_create.LinearMarginItemDecoration
 import com.cis4030.pokedex.viewmodels.SharedViewModel
-import com.cis4030.pokedex.viewmodels.TeamsViewModel
+import com.cis4030.pokedex.viewmodels.TeamListViewModel
 
 class TeamListFragment : Fragment() {
-
-    private val sharedViewModel: SharedViewModel by activityViewModels()
-    private val viewModel:TeamsViewModel by activityViewModels()
+    private val viewModel:TeamListViewModel by activityViewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -27,11 +25,11 @@ class TeamListFragment : Fragment() {
         binding.viewModel=viewModel
 
         binding.teamList.adapter=TeamsListAdapter(TeamsListAdapter.OnClickListener{
-            viewModel.teamToDisplay=it
-            val action = TeamListFragmentDirections.actionTeamViewerToTeamViewFragment()
+            val action = TeamListFragmentDirections.actionTeamViewerToTeamViewFragment(it.name)
             findNavController().navigate(action)
-        })
+        },viewModel.repository)
         binding.teamList.addItemDecoration(LinearMarginItemDecoration(20))
+
 
         viewModel.teamsList.observe(viewLifecycleOwner){
             binding.noTeamText.isVisible = it.isEmpty()
@@ -44,7 +42,7 @@ class TeamListFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.teams_fragment_menu,menu)
+        inflater.inflate(R.menu.team_list_fragment_menu,menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

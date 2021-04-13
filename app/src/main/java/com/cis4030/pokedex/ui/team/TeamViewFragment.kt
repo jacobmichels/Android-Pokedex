@@ -1,126 +1,156 @@
 package com.cis4030.pokedex.ui.team
 
+import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
+import android.util.Log
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import com.cis4030.pokedex.R
+import com.cis4030.pokedex.database.DatabaseTeam
 import com.cis4030.pokedex.databinding.FragmentTeamViewBinding
 import com.cis4030.pokedex.util.getColorRounded
-import com.cis4030.pokedex.util.loadImage
-import com.cis4030.pokedex.viewmodels.TeamsViewModel
+import com.cis4030.pokedex.viewmodels.TeamViewModel
 
-class TeamViewFragment: Fragment() {
-    val viewModel: TeamsViewModel by activityViewModels()
+class TeamViewFragment: Fragment(), RenameTeamDialog.RenameDialogListener, DeleteTeamDialog.DeleteDialogListener {
+    val viewModel: TeamViewModel by activityViewModels()
+    lateinit var binding: FragmentTeamViewBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val binding = FragmentTeamViewBinding.inflate(inflater)
+    ): View {
+        binding = FragmentTeamViewBinding.inflate(inflater)
 
-        getTeamPokemon()
+        val teamname = arguments?.getString("teamname")
+        if(teamname!=null){
+            Log.d("POKEDEX","displaying team: $teamname")
+            viewModel.loadTeam(teamname)
+        }
 
-        binding.pokemon1Name.text=viewModel.pokemon1?.name
-        binding.pokemon1Name.isGone=!viewModel.pokemon1?.name.isNullOrEmpty()
+        val pokemonToAdd = arguments?.getString("pokemon")
+        if(pokemonToAdd!=null){
+            viewModel.addPokemon(pokemonToAdd)
+        }
 
-        binding.pokemon2Name.text=viewModel.pokemon2?.name
-        binding.pokemon2Name.isGone=!viewModel.pokemon2?.name.isNullOrEmpty()
+        setHasOptionsMenu(true)
 
-        binding.pokemon3Name.text=viewModel.pokemon3?.name
-        binding.pokemon3Name.isGone=!viewModel.pokemon4?.name.isNullOrEmpty()
+        binding.viewModel=viewModel
 
-        binding.pokemon4Name.text=viewModel.pokemon4?.name
-        binding.pokemon4Name.isGone=!viewModel.pokemon4?.name.isNullOrEmpty()
-
-        binding.pokemon5Name.text=viewModel.pokemon5?.name
-        binding.pokemon5Name.isGone=!viewModel.pokemon5?.name.isNullOrEmpty()
-
-        binding.pokemon6Name.text=viewModel.pokemon6?.name
-        binding.pokemon6Name.isGone=!viewModel.pokemon6?.name.isNullOrEmpty()
-
-        loadImage(binding.pokemon1Sprite,viewModel.pokemon1?.imageUrl)
-        binding.pokemon1Sprite.isGone=viewModel.pokemon1==null
-
-        loadImage(binding.pokemon2Sprite,viewModel.pokemon2?.imageUrl)
-        binding.pokemon2Sprite.isGone=viewModel.pokemon2==null
-
-        loadImage(binding.pokemon3Sprite,viewModel.pokemon3?.imageUrl)
-        binding.pokemon3Sprite.isGone=viewModel.pokemon3==null
-
-        loadImage(binding.pokemon4Sprite,viewModel.pokemon4?.imageUrl)
-        binding.pokemon4Sprite.isGone=viewModel.pokemon4==null
-
-        loadImage(binding.pokemon5Sprite,viewModel.pokemon5?.imageUrl)
-        binding.pokemon5Sprite.isGone=viewModel.pokemon5==null
-
-        loadImage(binding.pokemon6Sprite,viewModel.pokemon6?.imageUrl)
-        binding.pokemon6Sprite.isGone=viewModel.pokemon6==null
-
-        binding.pokemon1Type1.text=viewModel.pokemon1?.type1
-        binding.pokemon1Type1.isGone=viewModel.pokemon1?.type1.isNullOrEmpty()
-        binding.pokemon1Type2.text=viewModel.pokemon1?.type2
-        binding.pokemon1Type2.isGone=viewModel.pokemon1?.type2.isNullOrEmpty()
-
-        binding.pokemon2Type1.text=viewModel.pokemon2?.type1
-        binding.pokemon2Type1.isGone=viewModel.pokemon2?.type1.isNullOrEmpty()
-        binding.pokemon2Type2.text=viewModel.pokemon2?.type2
-        binding.pokemon2Type2.isGone=viewModel.pokemon2?.type2.isNullOrEmpty()
-
-        binding.pokemon3Type1.text=viewModel.pokemon3?.type1
-        binding.pokemon3Type1.isGone=viewModel.pokemon3?.type1.isNullOrEmpty()
-        binding.pokemon3Type2.text=viewModel.pokemon3?.type2
-        binding.pokemon3Type2.isGone=viewModel.pokemon3?.type2.isNullOrEmpty()
-
-        binding.pokemon4Type1.text=viewModel.pokemon4?.type1
-        binding.pokemon4Type1.isGone=viewModel.pokemon4?.type1.isNullOrEmpty()
-        binding.pokemon4Type2.text=viewModel.pokemon4?.type2
-        binding.pokemon4Type2.isGone=viewModel.pokemon4?.type2.isNullOrEmpty()
-
-        binding.pokemon5Type1.text=viewModel.pokemon5?.type1
-        binding.pokemon5Type1.isGone=viewModel.pokemon5?.type1.isNullOrEmpty()
-        binding.pokemon5Type2.text=viewModel.pokemon5?.type2
-        binding.pokemon5Type2.isGone=viewModel.pokemon5?.type2.isNullOrEmpty()
-
-        binding.pokemon6Type1.text=viewModel.pokemon6?.type1
-        binding.pokemon6Type1.isGone=viewModel.pokemon6?.type1.isNullOrEmpty()
-        binding.pokemon6Type2.text=viewModel.pokemon6?.type2
-        binding.pokemon6Type2.isGone=viewModel.pokemon6?.type2.isNullOrEmpty()
-
+        binding.pokemon1=viewModel.pokemon1
         binding.pokemon1Bg.setBackgroundResource(getColorRounded(viewModel.pokemon1?.type1))
-        binding.pokemon1Bg.isGone=viewModel.pokemon1==null
+        binding.pokemon2=viewModel.pokemon2
         binding.pokemon2Bg.setBackgroundResource(getColorRounded(viewModel.pokemon2?.type1))
-        binding.pokemon2Bg.isGone=viewModel.pokemon2==null
+        binding.pokemon3=viewModel.pokemon3
         binding.pokemon3Bg.setBackgroundResource(getColorRounded(viewModel.pokemon3?.type1))
-        binding.pokemon3Bg.isGone=viewModel.pokemon3==null
+        binding.pokemon4=viewModel.pokemon4
         binding.pokemon4Bg.setBackgroundResource(getColorRounded(viewModel.pokemon4?.type1))
-        binding.pokemon4Bg.isGone=viewModel.pokemon4==null
+        binding.pokemon5=viewModel.pokemon5
         binding.pokemon5Bg.setBackgroundResource(getColorRounded(viewModel.pokemon5?.type1))
-        binding.pokemon5Bg.isGone=viewModel.pokemon5==null
+        binding.pokemon6=viewModel.pokemon6
         binding.pokemon6Bg.setBackgroundResource(getColorRounded(viewModel.pokemon6?.type1))
-        binding.pokemon6Bg.isGone=viewModel.pokemon6==null
+
+        setPowerText(viewModel.team!!)
 
         binding.lifecycleOwner=this
 
+        (activity as AppCompatActivity?)?.supportActionBar?.title=viewModel.teamname
+
+        viewModel.refreshUI.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.invalidateAll()
+                viewModel.refreshedUI()
+            }
+
+        }
 
         return binding.root
     }
 
-    private fun getTeamPokemon(){
-        viewModel.populatePokemonFields()
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.team_fragment_menu,menu)
     }
 
-    override fun onDestroyView() {
-        viewModel.pokemon1=null
-        viewModel.pokemon2=null
-        viewModel.pokemon3=null
-        viewModel.pokemon4=null
-        viewModel.pokemon5=null
-        viewModel.pokemon6=null
-        super.onDestroyView()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            android.R.id.home->{
+                activity?.onBackPressed()
+                true
+            }
+            R.id.add_pokemon -> {
+                if(viewModel.team?.pokemon6Name?.isNotBlank() == true){
+                    Toast.makeText(context,"Team is already at max capacity.",Toast.LENGTH_LONG).show()
+                    return true
+                }
+                val action = TeamViewFragmentDirections.actionTeamViewFragmentToSelectPokemonFragment()
+                findNavController().navigate(action)
+                true
+            }
+            R.id.rename_team->{
+                val dialog = RenameTeamDialog(viewModel)
+                dialog.isCancelable=false
+                dialog.setTargetFragment(this,0)
+                dialog.show(parentFragmentManager,"Rename Team Dialog")
+
+                true
+            }
+            R.id.delete_team->{
+                val dialog = DeleteTeamDialog(viewModel)
+                dialog.isCancelable=false
+                dialog.setTargetFragment(this,0)
+                dialog.show(parentFragmentManager,"Delete Team Dialog")
+
+                true
+            }
+            R.id.clear_team->{
+                viewModel.clearTeam()
+                binding.pokemon1=null
+                binding.pokemon2=null
+                binding.pokemon3=null
+                binding.pokemon4=null
+                binding.pokemon5=null
+                binding.pokemon6=null
+                binding.invalidateAll()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
+    override fun onRenameDialogPositiveClick(dialog: DialogInterface,name: String) {
+        if(name==viewModel.team?.name){
+            Toast.makeText(context,"Team is already called that!", Toast.LENGTH_LONG).show()
+            return
+        }
+        if(name.isBlank()){
+            Toast.makeText(context,"Team needs a name.", Toast.LENGTH_LONG).show()
+            return
+        }
+        if(!viewModel.updateTeamName(name)){
+            Toast.makeText(context,"Team names must be unique! Please try again.", Toast.LENGTH_LONG).show()
+            return
+        }
+        Toast.makeText(context,"Team name updated!",Toast.LENGTH_LONG).show()
+        dialog.dismiss()
+        findNavController().navigateUp()
+    }
+
+    override fun onDeleteDialogPositiveClick(dialog: DialogInterface) {
+        viewModel.deleteTeam()
+        Toast.makeText(context,"Team deleted!",Toast.LENGTH_LONG).show()
+        dialog.dismiss()
+        findNavController().navigateUp()
+    }
+
+    private fun setPowerText(team: DatabaseTeam){
+        viewModel.setPower(team.power)
     }
 }

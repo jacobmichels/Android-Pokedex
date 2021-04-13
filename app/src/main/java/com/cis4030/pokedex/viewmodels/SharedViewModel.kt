@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.cis4030.pokedex.database.*
 import com.cis4030.pokedex.repository.PokedexRepository
+import com.cis4030.pokedex.ui.pokedex_list.PokemonGridAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

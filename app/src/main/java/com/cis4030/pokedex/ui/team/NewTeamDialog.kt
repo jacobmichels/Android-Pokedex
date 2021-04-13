@@ -3,13 +3,12 @@ package com.cis4030.pokedex.ui.team
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.cis4030.pokedex.databinding.NewTeamDialogBinding
-import com.cis4030.pokedex.viewmodels.TeamsViewModel
+import com.cis4030.pokedex.viewmodels.TeamListViewModel
 
-class NewTeamDialog(val viewModel: TeamsViewModel): DialogFragment() {
+class NewTeamDialog(val viewModel: TeamListViewModel): DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let{
             val binding = NewTeamDialogBinding.inflate(it.layoutInflater)
