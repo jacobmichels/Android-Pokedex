@@ -1,31 +1,37 @@
 package com.cis4030.pokedex.util
 
-import android.os.Build
 import android.util.Log
 import android.widget.CheckBox
 import android.widget.ImageView
-import androidx.annotation.RequiresApi
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.cis4030.pokedex.R
-import com.cis4030.pokedex.database.DatabaseCustomMove
 import com.cis4030.pokedex.database.DatabaseCustomPokemon
 import com.cis4030.pokedex.database.DatabasePokemon
 import com.cis4030.pokedex.database.DatabaseTeam
-import com.cis4030.pokedex.ui.pokedex_create.CreatePokemonMovelistAdapter
+import com.cis4030.pokedex.network.datatransferobjects.type.Pokemon
 import com.cis4030.pokedex.ui.pokedex_create.CustomPokemonGridAdapter
 import com.cis4030.pokedex.ui.pokedex_list.PokemonGridAdapter
-import com.cis4030.pokedex.ui.team.TeamsListAdapater
+import com.cis4030.pokedex.ui.pokemon_select.PokemonSelectGridAdapter
+import com.cis4030.pokedex.ui.team.TeamsListAdapter
 import com.google.android.material.chip.Chip
 import java.io.File
+import java.io.FileNotFoundException
 
 @BindingAdapter("listData")
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<DatabasePokemon>?) {
-    val adapter = recyclerView.adapter as PokemonGridAdapter
-    adapter.submitList(data)
+    if(recyclerView.adapter is PokemonGridAdapter){
+        val adapter = recyclerView.adapter as PokemonGridAdapter
+        adapter.submitList(data)
+    }
+    else if(recyclerView.adapter is PokemonSelectGridAdapter){
+        val adapter = recyclerView.adapter as PokemonSelectGridAdapter
+        adapter.submitList(data)
+    }
 }
 
 @BindingAdapter("listData")
@@ -36,15 +42,20 @@ fun bindCustomRecyclerView(recyclerView: RecyclerView, data: List<DatabaseCustom
 
 @BindingAdapter("listData")
 fun bindTeamRecyclerView(recyclerView: RecyclerView, data: List<DatabaseTeam>?){
-    val adapter = recyclerView.adapter as TeamsListAdapater
+    val adapter = recyclerView.adapter as TeamsListAdapter
     adapter.submitList(data)
 }
 
 @BindingAdapter("imageName")
 fun bindImagename(imageView: ImageView, name: String){
-    val file = File(imageView.context.filesDir,name)
-    val bytes = file.readBytes()
-    imageView.setImageBitmap(byteArrayToBitmap(bytes))
+    try{
+        val file = File(imageView.context.filesDir,name)
+        val bytes = file.readBytes()
+        imageView.setImageBitmap(byteArrayToBitmap(bytes))
+    } catch(e: FileNotFoundException){
+        imageView.setImageResource(R.drawable.ic_broken_image)
+    }
+
 }
 
 /**

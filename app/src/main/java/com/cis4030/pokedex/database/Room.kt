@@ -11,6 +11,9 @@ import androidx.room.*
 
 @Dao
 interface PokemonDao {
+    @Query("select * from databasepokemon where name is :name")
+    suspend fun getSinglePokemonByName(name: String):DatabasePokemon
+
     @Query("select * from databasepokemon where custom order by id asc")
     fun getCustomPokemon():LiveData<List<DatabasePokemon>>
 
@@ -187,12 +190,21 @@ interface TeamDao{
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOne(team: DatabaseTeam)
+
+    @Delete
+    fun deleteTeam(team: DatabaseTeam)
+
+    @Update(onConflict = OnConflictStrategy.ABORT)
+    fun updateTeam(team: DatabaseTeam)
+
+    @Query("select * from databaseteam where name is :name")
+    suspend fun getTeamByName(name:String):DatabaseTeam?
 }
 
 /**
  * This is the database class. Here we define the data types to store in the database, as well as references to the Daos.
  */
-@Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class, DatabaseCustomPokemon::class,DatabaseCustomMove::class, DatabaseTeam::class], version = 15)
+@Database(entities = [DatabasePokemon::class, DatabaseAbility::class, DatabaseMove::class, DatabaseType::class, DatabaseCustomPokemon::class,DatabaseCustomMove::class, DatabaseTeam::class], version = 17)
 @TypeConverters(ListTypeConverters::class)
 abstract class PokemonDatabase:RoomDatabase(){
     abstract val pokemonDao:PokemonDao

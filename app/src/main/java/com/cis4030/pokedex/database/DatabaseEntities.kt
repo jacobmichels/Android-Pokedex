@@ -94,11 +94,13 @@ data class DatabaseCustomPokemon constructor(
 @Entity
 data class DatabaseTeam constructor(
     @PrimaryKey
-    val name: String,
-    val pokemon1Name:String?,
-    val pokemon2Name:String?,
-    val pokemon3Name:String?,
-    val pokemon4Name:String?,
-    val pokemon5Name:String?,
-    val pokemon6Name:String?,
+    var name: String,
+    var power: Int,
+    var pokemon1Name:String?,
+    var pokemon2Name:String?,
+    var pokemon3Name:String?,
+    var pokemon4Name:String?,
+    var pokemon5Name:String?,
+    var pokemon6Name:String?,
+    var isEmpty: Boolean
 )

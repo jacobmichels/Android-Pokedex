@@ -27,7 +27,7 @@ class PokedexListFragment : Fragment() {
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         //Use data binding to remove expensive calls to findviewbyid()
         val binding: FragmentListBinding = FragmentListBinding.inflate(inflater)
         binding.lifecycleOwner=this
@@ -81,13 +81,13 @@ class PokedexListFragment : Fragment() {
                 Log.d("POKEDEX","Filter menu button clicked.")
                 val dialogFragment = FilterDialogFragment()
                 dialogFragment.isCancelable = false
-                dialogFragment.show(parentFragmentManager,"Dialog")
+                dialogFragment.show(parentFragmentManager,"Filter Dialog")
                 true
             }
             R.id.sort_menu_button-> {
                 val dialogFragment = SortDialogFragment()
                 dialogFragment.isCancelable = false
-                dialogFragment.show(parentFragmentManager,"Dialog")
+                dialogFragment.show(parentFragmentManager,"Sort Dialog")
                 true
             }
             else -> super.onOptionsItemSelected(item)

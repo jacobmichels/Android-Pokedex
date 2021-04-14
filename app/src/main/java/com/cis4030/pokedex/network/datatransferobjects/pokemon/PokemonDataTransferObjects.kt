@@ -371,6 +371,6 @@ fun PokemonDTO.asDatabaseModel(): DatabasePokemon {
         },
         custom =false,
         generation = -1,
-        speciesName = this.species.name
+        speciesName = this.species.name.capitalize()
     )
 }

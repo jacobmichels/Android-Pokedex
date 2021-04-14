@@ -11,7 +11,6 @@
     <string name="sort_button_text">Sort</string>
     <string name="select_type_text">Select Type</string>
     <string name="detail_view_name"></string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="stats_button">Stats</string>
@@ -31,4 +30,5 @@
     <string name="sp_def_label">SP DEF</string>
     <string name="spd_label">SPD</string>
     <string name="type_label">Type</string>
+    <string name="power_text">Power: %s</string>
 </resources>

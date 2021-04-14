@@ -8,7 +8,11 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Base64
 import android.util.Log
+import android.widget.ImageView
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.net.toUri
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.cis4030.pokedex.R
 import com.cis4030.pokedex.database.DatabasePokemon
 import kotlinx.coroutines.Dispatchers
@@ -32,28 +36,31 @@ fun <T> parallelFor(range: Iterable<T>, action: suspend (T) -> Unit) = runBlocki
 /**
  * Utility function to return the background colour of a pokemon for the UI
  */
-fun getColorRounded(type: String): Int {
-    return when(type.toLowerCase()){
-        "grass" -> R.drawable.custom_rounded_corners_grass
-        "fire" -> R.drawable.custom_rounded_corners_fire
-        "water" -> R.drawable.custom_rounded_corners_water
-        "electric" -> R.drawable.custom_rounded_corners_electric
-        "normal" -> R.drawable.custom_rounded_corners_normal
-        "psychic" -> R.drawable.custom_rounded_corners_psychic
-        "fighting" -> R.drawable.custom_rounded_corners_fighting
-        "flying" -> R.drawable.custom_rounded_corners_flying
-        "poison" -> R.drawable.custom_rounded_corners_poison
-        "ground" -> R.drawable.custom_rounded_corners_ground
-        "rock" -> R.drawable.custom_rounded_corners_rock
-        "ice" -> R.drawable.custom_rounded_corners_ice
-        "bug" -> R.drawable.custom_rounded_corners_bug
-        "dragon" -> R.drawable.custom_rounded_corners_dragon
-        "ghost" -> R.drawable.custom_rounded_corners_ghost
-        "dark" -> R.drawable.custom_rounded_corners_dark
-        "steel" -> R.drawable.custom_rounded_corners_steel
-        "fairy" -> R.drawable.custom_rounded_corners_fairy
-        else -> R.drawable.custom_rounded_corners_white
+fun getColorRounded(type: String?): Int {
+    if (type != null) {
+        return when(type.toLowerCase()){
+            "grass" -> R.drawable.custom_rounded_corners_grass
+            "fire" -> R.drawable.custom_rounded_corners_fire
+            "water" -> R.drawable.custom_rounded_corners_water
+            "electric" -> R.drawable.custom_rounded_corners_electric
+            "normal" -> R.drawable.custom_rounded_corners_normal
+            "psychic" -> R.drawable.custom_rounded_corners_psychic
+            "fighting" -> R.drawable.custom_rounded_corners_fighting
+            "flying" -> R.drawable.custom_rounded_corners_flying
+            "poison" -> R.drawable.custom_rounded_corners_poison
+            "ground" -> R.drawable.custom_rounded_corners_ground
+            "rock" -> R.drawable.custom_rounded_corners_rock
+            "ice" -> R.drawable.custom_rounded_corners_ice
+            "bug" -> R.drawable.custom_rounded_corners_bug
+            "dragon" -> R.drawable.custom_rounded_corners_dragon
+            "ghost" -> R.drawable.custom_rounded_corners_ghost
+            "dark" -> R.drawable.custom_rounded_corners_dark
+            "steel" -> R.drawable.custom_rounded_corners_steel
+            "fairy" -> R.drawable.custom_rounded_corners_fairy
+            else -> R.drawable.custom_rounded_corners_white
+        }
     }
+    return R.drawable.custom_rounded_corners_white
 }
 
 fun getTypeColor(typename: String): Int {
@@ -104,4 +111,17 @@ fun bitmapToByteArray(bitmap:Bitmap):ByteArray{
 fun byteArrayToBitmap(bytes:ByteArray):Bitmap{
     val input = ByteArrayInputStream(bytes)
     return BitmapFactory.decodeStream(input)
+}
+
+fun loadImage(imgView: ImageView, url: String?){
+    url?.let{
+        val imgUri = url.toUri().buildUpon().scheme("https").build()
+        Glide.with(imgView.context)
+            .load(imgUri)
+            .apply(
+                RequestOptions()
+                    .placeholder(R.drawable.loading_animation)
+                    .error(R.drawable.ic_broken_image))
+            .into(imgView)
+    }
 }

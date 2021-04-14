@@ -311,4 +311,24 @@ class PokedexRepository(private val database: PokemonDatabase) {
     suspend fun getCustomPokemon():List<DatabaseCustomPokemon>{
         return database.customPokemonDao.getPokemonList()
     }
+
+    fun insertTeam(team:DatabaseTeam){
+        database.teamDao.insertOne(team)
+    }
+
+    fun deleteTeam(team:DatabaseTeam){
+        database.teamDao.deleteTeam(team)
+    }
+
+    suspend fun getPokemonByName(name: String):DatabasePokemon{
+        return database.pokemonDao.getSinglePokemonByName(name)
+    }
+
+    suspend fun getTeamByName(name: String):DatabaseTeam?{
+        return database.teamDao.getTeamByName(name)
+    }
+
+    suspend fun updateTeam(team: DatabaseTeam){
+        database.teamDao.updateTeam(team)
+    }
 }
