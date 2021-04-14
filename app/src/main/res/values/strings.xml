@@ -30,4 +30,5 @@
     <string name="sp_atk_label">SP ATK</string>
     <string name="sp_def_label">SP DEF</string>
     <string name="spd_label">SPD</string>
+    <string name="type_label">Type</string>
 </resources>

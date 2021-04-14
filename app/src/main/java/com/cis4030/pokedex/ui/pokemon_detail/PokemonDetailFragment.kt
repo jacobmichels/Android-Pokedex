@@ -408,6 +408,8 @@ class PokemonDetailFragment : Fragment() {
         val descriptionView:TextView = view.findViewById(R.id.description_content)
         val egg1: Button = view.findViewById(R.id.egg_group_1)
         val egg2: Button = view.findViewById(R.id.egg_group_2)
+        val type1: Button = view.findViewById(R.id.type_1)
+        val type2: Button = view.findViewById(R.id.type_2)
         val heightContent:TextView = view.findViewById(R.id.height_content)
         val weightContent:TextView = view.findViewById(R.id.weight_content)
         val habitatContent:TextView = view.findViewById(R.id.habitat_content)
@@ -417,10 +419,22 @@ class PokemonDetailFragment : Fragment() {
         //set the description content
         descriptionView.text = this.description
 
+        //set the type section
+        type1.text = this.type[0]
+        setMoveDamageColor(type1, this.type[0])
+        if (this.type.size > 1) {
+            type2.text = this.type[1]
+            setMoveDamageColor(type2, this.type[1])
+        } else {
+            type2.visibility = View.INVISIBLE
+        }
+
+//        set the type colors.
+
+
         //set the egg group sections
         egg1.text = eggGroup[0].capitalize()
         setEggGroupColor(eggGroup[0].toLowerCase(), egg1)
-
         if(eggGroup.size < 2) {
             egg2.visibility = View.INVISIBLE
         }
@@ -428,6 +442,10 @@ class PokemonDetailFragment : Fragment() {
             egg2.text = eggGroup[1].capitalize()
             setEggGroupColor(eggGroup[1].toLowerCase(), egg2)
         }
+
+
+
+
 
         //set the height section
         heightContent.text = this.height
