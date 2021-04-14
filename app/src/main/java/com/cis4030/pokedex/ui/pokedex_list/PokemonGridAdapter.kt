@@ -1,5 +1,6 @@
 package com.cis4030.pokedex.ui.pokedex_list
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,6 +11,7 @@ import com.cis4030.pokedex.database.DatabaseCustomMove
 import com.cis4030.pokedex.database.DatabasePokemon
 import com.cis4030.pokedex.databinding.PokedexViewItemBinding
 import com.cis4030.pokedex.util.getColorRounded
+
 
 class PokemonGridAdapter(private val onClickListener: OnClickListener) : ListAdapter<DatabasePokemon, PokemonGridAdapter.PokemonViewHolder>(DiffCallback) {
 
@@ -70,6 +72,10 @@ class PokemonGridAdapter(private val onClickListener: OnClickListener) : ListAda
         return pokemon.id.toLong()
     }
 
+    fun test() {
+        Log.d("detail","clicked")
+    }
+
     /**
      * Custom listener that handles clicks on [RecyclerView] items.  Passes the [DatabasePokemon]
      * associated with the current item to the [onClick] function.
@@ -78,5 +84,7 @@ class PokemonGridAdapter(private val onClickListener: OnClickListener) : ListAda
     class OnClickListener(val clickListener: (pokemon:DatabasePokemon) -> Unit) {
         fun onClick(pokemon:DatabasePokemon) = clickListener(pokemon)
     }
+
+
 
 }
