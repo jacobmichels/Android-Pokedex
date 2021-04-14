@@ -10,5 +10,25 @@
     <string name="search_button_text">Search</string>
     <string name="sort_button_text">Sort</string>
     <string name="select_type_text">Select Type</string>
+    <string name="detail_view_name"></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="stats_button">Stats</string>
+    <string name="moves">Moves</string>
+    <string name="evolutions">Evolutions</string>
+    <string name="about_description_header">Description</string>
+    <string name="egg_group_header">Egg Group</string>
+    <string name="height_label">Height</string>
+    <string name="weight_label">Weight</string>
+    <string name="habitat_label">Habitat</string>
+    <string name="growth_label">Growth Rate</string>
+    <string name="stats_header">Base Statistics</string>
+    <string name="hp_label">HP</string>
+    <string name="atk_label">ATK</string>
+    <string name="def_label">DEF</string>
+    <string name="sp_atk_label">SP ATK</string>
+    <string name="sp_def_label">SP DEF</string>
+    <string name="spd_label">SPD</string>
+    <string name="type_label">Type</string>
     <string name="power_text">Power: %s</string>
 </resources>

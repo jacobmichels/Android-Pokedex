@@ -9,7 +9,11 @@
         android:id="@+id/pokedex_home"
         android:name="com.cis4030.pokedex.ui.pokedex_list.PokedexListFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_pokedex_home_to_pokemonDetailFragment"
+            app:destination="@id/pokemonDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/pokedex_create"
@@ -42,6 +46,17 @@
         android:name="com.cis4030.pokedex.ui.pokedex_create.CreatePokemonFragment"
         android:label="Create New Pokemon"
         tools:layout="@layout/fragment_create_pokemon" />
+  
+    <fragment
+        android:id="@+id/pokemonDetailFragment"
+        android:name="com.cis4030.pokedex.ui.pokemon_detail.PokemonDetailFragment"
+        android:label="pokemonDetailFragment"
+        tools:layout="@layout/fragment_pokemon_detail" >
+        <argument
+            android:name="pokemonID"
+            app:argType="integer"/>
+    </fragment>
+
     <fragment
         android:id="@+id/teamViewFragment"
         android:name="com.cis4030.pokedex.ui.team.TeamViewFragment"
