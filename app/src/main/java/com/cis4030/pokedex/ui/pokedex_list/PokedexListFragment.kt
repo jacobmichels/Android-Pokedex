@@ -96,26 +96,26 @@ class PokedexListFragment : Fragment() {
 
     // goto the detail view from this view.
     private fun displayPokemonDetails(pokemon: DatabasePokemon, view:View) {
-        Log.d("detail", "Pokemon clicked " + pokemon.name)
+//        Log.d("detail", "Pokemon clicked " + pokemon.name)
+//
+//
+//        this.toast?.cancel()
+//
+//        val msg:String = "Sorry, a working internet connection is required to view the Pokemon details."
+//        toast = Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT)
+//
+//
+//        //first check if connected to internet
+//        if(connectedInternet() and hasInternetActivity() ) {
+//            this.toast?.cancel()
+//        }
+//        else {
+//            //make a toast message here
+//            Log.d("internet","No internet!!")
+//            toast?.show()
+//        }
 
-
-        this.toast?.cancel()
-
-
-        val msg:String = "Sorry, a working internet connection is required to view the Pokemon details."
-        toast = Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT)
-
-
-        //first check if connected to internet
-        if(connectedInternet() and hasInternetActivity() ) {
-            view.findNavController().navigate(PokedexListFragmentDirections.actionPokedexHomeToPokemonDetailFragment(pokemon.id))
-            this.toast?.cancel()
-        }
-        else {
-            //make a toast message here
-            Log.d("internet","No internet!!")
-            toast?.show()
-        }
+        view.findNavController().navigate(PokedexListFragmentDirections.actionPokedexHomeToPokemonDetailFragment(pokemon.id))
     }
 
     private fun connectedInternet():Boolean {
