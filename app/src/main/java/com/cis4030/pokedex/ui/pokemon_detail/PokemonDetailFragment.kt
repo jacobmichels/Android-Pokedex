@@ -147,6 +147,11 @@ class PokemonDetailFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_pokemon_detail, container, false)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.detail_fragment_menu,menu)
+    }
+
     //when the view is created
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -186,6 +191,10 @@ class PokemonDetailFragment : Fragment() {
         when(item.itemId){
             android.R.id.home->{
                 findNavController().navigateUp()
+            }
+            R.id.compare_button->{
+                val action = PokemonDetailFragmentDirections.actionPokemonDetailFragmentToSelectPokemonFragment(true,pokemon!!.name)
+                findNavController().navigate(action)
             }
         }
         return true

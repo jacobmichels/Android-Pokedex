@@ -55,6 +55,19 @@
         <argument
             android:name="pokemonID"
             app:argType="integer"/>
+        <action
+            android:id="@+id/action_pokemonDetailFragment_to_selectPokemonFragment"
+            app:destination="@id/selectPokemonFragment">
+            <argument
+                android:name="compare"
+                app:argType="boolean"
+                />
+            <argument
+                android:name="basePokemon"
+                app:argType="string"
+                android:defaultValue=""
+                />
+        </action>
     </fragment>
 
     <fragment
@@ -81,5 +94,22 @@
                 android:defaultValue=""
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_selectPokemonFragment_to_compareFragment"
+            app:destination="@id/compareFragment"
+            app:popUpTo="@id/pokemonDetailFragment"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="pokemon1"
+                app:argType="string" />
+            <argument
+                android:name="pokemon2"
+                app:argType="string" />
+        </action>
     </fragment>
+    <fragment
+        android:id="@+id/compareFragment"
+        android:name="com.cis4030.pokedex.ui.comparison.CompareFragment"
+        android:label="CompareFragment"
+        tools:layout="@layout/compare_fragment"/>
 </navigation>

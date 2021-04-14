@@ -23,11 +23,20 @@ import java.util.*
 class SelectPokemonFragment: Fragment() {
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
+    var compare:Boolean = false
+    var basePokemon: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        if(arguments?.getBoolean("compare")==true){
+            compare=true
+            basePokemon = requireArguments().getString("basePokemon")
+        }
+
         val binding = FragmentListSelectBinding.inflate(inflater)
         binding.lifecycleOwner=this
         binding.viewModel=sharedViewModel
@@ -82,8 +91,16 @@ class SelectPokemonFragment: Fragment() {
     }
 
     private fun selectPokemon(pokemon: DatabasePokemon){
-        Toast.makeText(context,"Selected: ${pokemon.name}",Toast.LENGTH_LONG).show()
-        val action = SelectPokemonFragmentDirections.actionSelectPokemonFragmentToTeamViewFragment(pokemon = pokemon.name)
-        findNavController().navigate(action)
+        if(compare){
+            Toast.makeText(context,"Selected: ${pokemon.name}",Toast.LENGTH_LONG).show()
+            val pokemon2 = pokemon.name
+            val action = SelectPokemonFragmentDirections.actionSelectPokemonFragmentToCompareFragment(pokemon1 = basePokemon!!,pokemon2 = pokemon2)
+            findNavController().navigate(action)
+        }
+        else{
+            Toast.makeText(context,"Selected: ${pokemon.name}",Toast.LENGTH_LONG).show()
+            val action = SelectPokemonFragmentDirections.actionSelectPokemonFragmentToTeamViewFragment(pokemon = pokemon.name)
+            findNavController().navigate(action)
+        }
     }
 }
