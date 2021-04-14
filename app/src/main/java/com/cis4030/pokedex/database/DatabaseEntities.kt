@@ -1,18 +1,11 @@
 package com.cis4030.pokedex.database
 
-import android.graphics.drawable.Drawable
-import android.util.Log
-import androidx.core.graphics.drawable.toDrawable
-import androidx.room.Database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.cis4030.pokedex.R
 import com.cis4030.pokedex.domain.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @Entity
-data class DatabasePokemon constructor(
+data class DatabasePokemon(
     @PrimaryKey
     val name: String,
     val id: Int,
@@ -71,4 +64,43 @@ data class DatabaseMove constructor(
     val pp: Int?,
     val priority: Int,
     val target: String
+)
+
+@Entity
+data class DatabaseCustomMove constructor(
+    @PrimaryKey
+    val name: String,
+    val type: String,
+    val description: String
+)
+
+@Entity
+data class DatabaseCustomPokemon constructor(
+    @PrimaryKey()
+    val name: String,
+    val description: String,
+    val movesList: List<String>,
+    val baseHP: Int,
+    val baseAtk: Int,
+    val baseDfn: Int,
+    val spAtk: Int,
+    val spDfn: Int,
+    val speed: Int,
+    val type1: String,
+    val type2: String?,
+    val moves: List<String>
+)
+
+@Entity
+data class DatabaseTeam constructor(
+    @PrimaryKey
+    var name: String,
+    var power: Int,
+    var pokemon1Name:String?,
+    var pokemon2Name:String?,
+    var pokemon3Name:String?,
+    var pokemon4Name:String?,
+    var pokemon5Name:String?,
+    var pokemon6Name:String?,
+    var isEmpty: Boolean
 )

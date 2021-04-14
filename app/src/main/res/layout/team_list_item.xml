@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="team"
+            type="com.cis4030.pokedex.database.DatabaseTeam" />
+        <variable
+            name="dbpokemon1"
+            type="com.cis4030.pokedex.database.DatabasePokemon" />
+        <variable
+            name="dbpokemon2"
+            type="com.cis4030.pokedex.database.DatabasePokemon" />
+        <variable
+            name="dbpokemon3"
+            type="com.cis4030.pokedex.database.DatabasePokemon" />
+        <variable
+            name="dbpokemon4"
+            type="com.cis4030.pokedex.database.DatabasePokemon" />
+        <variable
+            name="dbpokemon5"
+            type="com.cis4030.pokedex.database.DatabasePokemon" />
+        <variable
+            name="dbpokemon6"
+            type="com.cis4030.pokedex.database.DatabasePokemon" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/team_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:text="@{team.name}"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/team_power_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="48dp"
+            android:text="@{@string/power_text(team.power)}"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/pokemon_1"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
+            app:imageUrl="@{dbpokemon1.imageUrl}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@mipmap/ic_bulbasaur_foreground" />
+
+        <ImageView
+            android:id="@+id/pokemon_2"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="64dp"
+            app:imageUrl="@{dbpokemon2.imageUrl}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@mipmap/ic_bulbasaur_foreground" />
+
+        <ImageView
+            android:id="@+id/pokemon_3"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="16dp"
+            app:imageUrl="@{dbpokemon3.imageUrl}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@mipmap/ic_bulbasaur_foreground" />
+
+        <ImageView
+            android:id="@+id/pokemon_4"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            app:imageUrl="@{dbpokemon4.imageUrl}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/pokemon_5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pokemon_1"
+            tools:srcCompat="@mipmap/ic_bulbasaur_foreground" />
+
+        <ImageView
+            android:id="@+id/pokemon_5"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="16dp"
+            app:imageUrl="@{dbpokemon5.imageUrl}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pokemon_2"
+            tools:srcCompat="@mipmap/ic_bulbasaur_foreground" />
+
+        <ImageView
+            android:id="@+id/pokemon_6"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:imageUrl="@{dbpokemon6.imageUrl}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/pokemon_5"
+            app:layout_constraintTop_toBottomOf="@+id/pokemon_3"
+            tools:srcCompat="@mipmap/ic_bulbasaur_foreground" />
+
+        <TextView
+            android:id="@+id/empty_team_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Pokemon on this team."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="@{team.empty ? View.VISIBLE : View.GONE}"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

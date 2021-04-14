@@ -2,16 +2,14 @@ package com.cis4030.pokedex.ui.pokedex_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 
 import androidx.recyclerview.widget.RecyclerView
-import com.cis4030.pokedex.R
+import com.cis4030.pokedex.database.DatabaseCustomMove
 import com.cis4030.pokedex.database.DatabasePokemon
 import com.cis4030.pokedex.databinding.PokedexViewItemBinding
-import com.cis4030.pokedex.util.getColor
-import java.util.*
+import com.cis4030.pokedex.util.getColorRounded
 
 class PokemonGridAdapter(private val onClickListener: OnClickListener) : ListAdapter<DatabasePokemon, PokemonGridAdapter.PokemonViewHolder>(DiffCallback) {
 
@@ -23,7 +21,7 @@ class PokemonGridAdapter(private val onClickListener: OnClickListener) : ListAda
         RecyclerView.ViewHolder(binding.root) {
         fun bind(pokemon: DatabasePokemon) {
             binding.pokemon = pokemon
-            binding.root.setBackgroundResource(getColor(pokemon))
+            binding.root.setBackgroundResource(getColorRounded(pokemon.type1))
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
