@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.cis4030.pokedex.MainActivity
 import com.cis4030.pokedex.R
 import com.cis4030.pokedex.database.PokemonDatabase
@@ -142,7 +143,13 @@ class PokemonDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_pokemon_detail, container, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.detail_fragment_menu,menu)
     }
 
     //when the view is created
@@ -178,6 +185,19 @@ class PokemonDetailFragment : Fragment() {
 
 
         initView(view)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home->{
+                findNavController().navigateUp()
+            }
+            R.id.compare_button->{
+                val action = PokemonDetailFragmentDirections.actionPokemonDetailFragmentToSelectPokemonFragment(true,pokemon!!.name)
+                findNavController().navigate(action)
+            }
+        }
+        return true
     }
 
     private fun getAboutSectionData() {
