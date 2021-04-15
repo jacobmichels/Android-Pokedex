@@ -34,9 +34,10 @@
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/type_1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.192"
+            app:layout_constraintHorizontal_bias="0.086"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
             tools:text="Bulbasaur" />
 
         <ImageView
@@ -44,9 +45,9 @@
             android:layout_width="191dp"
             android:layout_height="176dp"
             android:layout_marginStart="28dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="25dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="8dp"
             android:contentDescription="Image of the current pokemon"
             app:imageName="@{pokemon.name}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -54,6 +55,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/pokemon_name"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             tools:srcCompat="@mipmap/ic_squirtle_fg" />
 
         <TextView
@@ -65,6 +67,7 @@
             android:layout_marginEnd="68dp"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/roboto_medium"
+            android:textSize="18dp"
             android:text="@{pokemon.type1}"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -76,8 +79,8 @@
 
         <TextView
             android:id="@+id/type_2"
-            android:layout_width="56dp"
-            android:layout_height="24dp"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
             android:layout_marginStart="67dp"
             android:layout_marginTop="144dp"
             android:layout_marginEnd="72dp"
@@ -88,6 +91,7 @@
             android:text="@{pokemon.type2}"
             android:textAlignment="center"
             android:textColor="@color/white"
+            android:textSize="18dp"
             android:visibility="@{pokemon.type2.equals(@string/select_type_text) ?  View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/pokemon_sprite"
